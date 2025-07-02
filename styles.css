@@ -182,7 +182,7 @@ h1 {
 /* Estilos para o mapa embutido */
 .map-container {
     position: relative;
-    padding-bottom: 75%;
+    padding-bottom: 35%;
     overflow: hidden;
     background: #eee;
     margin: 0 auto;
@@ -198,6 +198,9 @@ h1 {
     border: 0;
 }
 
+#visit-section p {
+    padding-bottom: 15px;
+}
 
 /* ============================================ */
 /* CARROSSEL DE PISCINAS (SWIPER)               */

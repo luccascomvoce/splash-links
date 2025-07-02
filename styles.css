@@ -82,7 +82,7 @@ body {
 /* ============================================ */
 .logo {
     max-width: 150px;
-    margin-bottom: 100px;
+    margin-bottom: 200px;
 }
 
 h1 {
@@ -200,6 +200,25 @@ h1 {
 
 #visit-section p {
     padding-bottom: 15px;
+}
+
+#waterDropVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que o vídeo cubra toda a área sem distorcer */
+    pointer-events: none; /* Impede que o vídeo interfira com cliques e interações */
+    z-index: 0; /* Coloca o vídeo atrás do conteúdo da seção (parallax-content tem z-index: 1) */
+    
+    /* MODO DE MESCLAGEM: essencial para o efeito de gotas */
+    /* 'screen' clareia as cores, fazendo com que o preto do vídeo se torne transparente
+       e as gotas claras se destaquem sobre o fundo do seu site. */
+    mix-blend-mode: overlay; 
+
+    /* Opcional: opacidade para tornar o efeito mais sutil */
+    opacity: 0.5; /* Ajuste este valor conforme necessário (0.0 a 1.0) */
 }
 
 /* ============================================ */

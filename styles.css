@@ -1,0 +1,437 @@
+/* ============================================ */
+/* CONFIGURAÇÕES GERAIS E VARIÁVEIS             */
+/* ============================================ */
+:root {
+    --whatsapp-green: #25D366;
+    --dark-footer: #1A1A1A;
+    --card-bg: #F5F5F5;
+    --text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+
+    /* Paleta de cores pastéis para os nomes das piscinas */
+    --pastel-blue: #A3BFFA;
+    --pastel-purple: #D6BCFA;
+    --pastel-yellow: #FEF9A7;
+    --pastel-green: #A7F3D0;
+
+    --quality-gold: white;   /* Dourado para "Qualidade" */
+    --trust-blue: #ADD8E6;     /* Azul royal para "Confiança" */
+    --security-green: #87CEEB; /* Verde mar para "Segurança" */
+    --pastel-pink-bg: rgba(229, 0, 126, 0.5);  /* Rosa pastel para o fundo do nome */
+    --gradient-end-blue: #6BC8F1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #FFFFFF;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ============================================ */
+/* EFEITO DE PARALAXE                           */
+/* ============================================ */
+.parallax-section {
+    position: relative;
+    min-height: 80vh; /* Altura mínima da seção */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* O 'background-attachment: fixed' será controlado via JS para melhor compatibilidade */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+#section1 {
+    background-image: linear-gradient(rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 100%), url('./images/fundo1.jpg');
+    min-height: 100vh;
+}
+
+#section3 {
+    background-image: linear-gradient(rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 100%), url('./images/fundo2.jpg');
+    min-height: 100vh;
+}
+
+#section3.p {
+    background-color: #eee;
+}
+
+.parallax-content {
+    z-index: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ============================================ */
+/* ESTILOS DAS SEÇÕES                           */
+/* ============================================ */
+.logo {
+    max-width: 150px;
+    margin-bottom: 100px;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: 1000;
+    background: linear-gradient(to right, white, var(--gradient-end-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    background-size: 200% auto;
+    animation: shine 3.8s linear infinite;
+}
+
+@keyframes shine {
+    0% {
+        background-position: 0% center;
+    }
+    /* O gradiente se move durante os primeiros 0.8s da animação (0.8 / 3.8 * 100)% */
+    /* Aproximadamente 21.05% da duração total */
+    21.05% { /* (0.8 / 3.8) * 100 = 21.05 */
+        background-position: -200% center;
+    }
+    /* O gradiente permanece na posição final durante o resto do tempo (3s de atraso) */
+    100% {
+        background-position: -200% center;
+    }
+}
+
+.social-icons {
+    margin-top: 10px; /* Espaço entre o texto e os ícones */
+    display: flex; /* Para alinhar os ícones horizontalmente */
+    gap: 15px; /* Espaço entre os ícones */
+    justify-content: center; /* Opcional: para centralizar os ícones */
+    align-items: center; /* Alinha verticalmente se houver tamanhos diferentes */
+}
+
+.social-icons a {
+    color: #ffffff; /* Cor dos ícones (ajuste conforme o tema do seu site) */
+    font-size: 24px; /* Tamanho dos ícones (ajuste conforme necessário) */
+    transition: color 0.3s ease; /* Transição suave para o hover */
+    text-decoration: none; /* Remove sublinhado dos links */
+}
+
+.social-icons a:hover {
+    color: #007bff; /* Cor ao passar o mouse (exemplo: azul, ajuste conforme o tema) */
+}
+
+/* Estilo específico para o ícone do Kwai se for uma imagem */
+.social-icons img {
+    width: 24px; /* Garante que o ícone Kwai tenha o mesmo tamanho dos outros */
+    height: 24px;
+    vertical-align: middle; /* Ajuda no alinhamento */
+}
+
+.highlight-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: var(--text-shadow);
+    max-width: 800px;
+}
+
+.content-section {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #FFFFFF;
+}
+
+.content-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+.content-section h3 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.carrossel-section {
+    background-color: #149BD7;
+}
+
+.carrossel-section h2 {
+    color: white; 
+    font-style: italic;
+}
+
+.cor-piscina {
+    color: #149BD7; /* Azul */
+}
+
+.cor-splash {
+    color: #E5007E; /* Rosa */
+}
+
+/* Estilos para o mapa embutido */
+.map-container {
+    position: relative;
+    padding-bottom: 75%;
+    overflow: hidden;
+    background: #eee;
+    margin: 0 auto;
+    height: 0;
+}
+
+.map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+
+/* ============================================ */
+/* CARROSSEL DE PISCINAS (SWIPER)               */
+/* ============================================ */
+.swiper {
+    width: 100%;
+    padding: 10px 0 50px 0;
+    cursor: grab;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.pool-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.pool-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+}
+
+.pool-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.pool-card img {
+    width: 100%;
+    max-height: 90%; /* Limita a altura da imagem para deixar espaço para o nome */
+    object-fit: contain; /* ESSENCIAL: Contém a imagem sem cortar ou espichar */
+    filter: drop-shadow(3px 5px 8px rgba(0, 0, 0, 0.3));
+    margin-bottom: 0; /* Remove a margem inferior antiga */
+}
+
+.pool-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    position: absolute; /* Posição sobreposta */
+    bottom: 20px; /* Distância da borda inferior */
+    left: 0;
+    right: 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9); /* Sombra forte para legibilidade */
+    padding: 5px 10px;
+    background-color: var(--pastel-pink-bg);
+    border-radius: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    isolation: isolate;
+}
+
+.pool-name span {
+    color: white;
+    mix-blend-mode: destination-out;
+    text-shadow: none;
+}
+
+/* Cores de fundo para os nomes dos modelos */
+.pool-name.color-1 { color: var(--pastel-blue); }
+.pool-name.color-2 { color: var(--pastel-purple); }
+.pool-name.color-3 { color: var(--pastel-yellow); }
+.pool-name.color-4 { color: var(--pastel-green); }
+
+/* Estilos para navegação e paginação do Swiper */
+.swiper-button-next, .swiper-button-prev {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    color: #007aff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* ============================================ */
+/* BOTÃO WHATSAPP                               */
+/* ============================================ */
+.whatsapp-button {
+    background-color: var(--whatsapp-green);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.whatsapp-button:hover {
+    background-color: #1EBE57;
+    transform: translateY(-3px);
+}
+
+.whatsapp-button i {
+    font-size: 1.5rem;
+}
+
+.floating-whatsapp-button {
+    position: fixed;
+    bottom: 30px; /* Distância da borda inferior */
+    right: 30px;  /* Distância da borda direita */
+    z-index: 1000; /* Garante que o botão fique acima de outros elementos */
+}
+
+
+/* ============================================ */
+/* RODAPÉ                                       */
+/* ============================================ */
+footer {
+    background-color: var(--dark-footer);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.8rem;
+}
+
+footer a {
+    color: var(--pastel-blue);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================ */
+/* RESPONSIVIDADE (MEDIA QUERIES)               */
+/* ============================================ */
+
+/* Tablets e telas menores */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2rem;
+    }
+    .highlight-text {
+        font-size: 1.5rem;
+    }
+    .content-section h2 {
+        font-size: 2rem;
+    }
+    .parallax-section {
+        min-height: 60vh;
+    }
+    #section1 {
+        min-height: 80vh;
+    }
+    .floating-whatsapp-button {
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+/* Dispositivos móveis */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    .highlight-text {
+        font-size: 1.2rem;
+    }
+    .logo {
+        max-width: 100px;
+    }
+    .parallax-section {
+        min-height: 50vh;
+    }
+    #section1 {
+        min-height: 70vh;
+    }
+    .content-section {
+        padding: 40px 15px;
+    }
+    .content-section h2 {
+        font-size: 1.8rem;
+    }
+    .content-section h3 {
+        font-size: 1.5rem;
+    }
+    .whatsapp-button {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    .floating-whatsapp-button {
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
+@media (min-width: 769px) {
+    #visit-section {
+        max-width: 900px; /* Largura máxima para a seção de visita */
+        margin: 0 auto;   /* Centraliza a seção de visita */
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .map-container {
+        width: 100%;
+        max-width: 600px; /* Define a largura máxima */
+        margin: 0 auto;  /* Garante o centralizamento */
+    }
+}

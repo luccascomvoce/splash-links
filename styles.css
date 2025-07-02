@@ -126,8 +126,33 @@ h1 {
     text-decoration: none; /* Remove sublinhado dos links */
 }
 
-.social-icons a:hover {
-    color: #007bff; /* Cor ao passar o mouse (exemplo: azul, ajuste conforme o tema) */
+/* Cores padrão dos ícones */
+.social-icons .fa-instagram {
+    color: #ffffff; /* Cor padrão branca */
+    transition: color 0.3s ease; /* Transição suave para a cor */
+}
+
+.social-icons .fa-facebook {
+    color: #ffffff; /* Cor padrão branca */
+    transition: color 0.3s ease;
+}
+
+.social-icons .fa-tiktok {
+    color: #ffffff; /* Cor padrão branca */
+    transition: color 0.3s ease;
+}
+
+/* Cores ao passar o mouse */
+.social-icons .fa-instagram:hover {
+    color: #E4405F; /* Cor original do Instagram */
+}
+
+.social-icons .fa-facebook:hover {
+    color: #1877F2; /* Cor original do Facebook */
+}
+
+.social-icons .fa-tiktok:hover {
+    color: #000000; /* TikTok geralmente usa preto ou o ícone colorido */
 }
 
 /* Estilo específico para o ícone do Kwai se for uma imagem */

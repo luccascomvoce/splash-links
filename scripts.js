@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         spaceBetween: 20,
         
         // Ativa o loop para um carrossel infinito
-        loop: true,
+        loop: false,
 
         // Paginação (os "pontos" abaixo do carrossel)
         pagination: {
@@ -75,4 +75,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // Permite arrastar com o mouse no desktop
         grabCursor: true,
     });
+
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    accordionHeaders.forEach(header => {
+    header.addEventListener('click', function() {
+        const accordionContent = this.nextElementSibling;
+        const currentlyActive = document.querySelector('.accordion-header.active');
+        const isExpanded = this.classList.contains('active');
+
+        // Fecha qualquer outro acordeão que esteja aberto
+        if (currentlyActive && currentlyActive !== this) {
+            currentlyActive.classList.remove('active');
+            currentlyActive.setAttribute('aria-expanded', 'false');
+            currentlyActive.nextElementSibling.classList.remove('show');
+        }
+
+        // Alterna a classe 'active' no header
+        this.classList.toggle('active');
+        this.setAttribute('aria-expanded', !isExpanded);
+        accordionContent.classList.toggle('show');
+    });
+});
 });

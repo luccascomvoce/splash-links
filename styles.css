@@ -31,7 +31,7 @@ html {
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: #FFFFFF;
     color: #333;
     line-height: 1.6;
@@ -64,10 +64,6 @@ body {
     min-height: 100vh;
 }
 
-#section3.p {
-    background-color: #eee;
-}
-
 .parallax-content {
     z-index: 1;
     padding: 20px;
@@ -81,8 +77,11 @@ body {
 /* ESTILOS DAS SEÇÕES                           */
 /* ============================================ */
 .logo {
-    max-width: 150px;
-    margin-bottom: 200px;
+    max-width: 120px;
+    position: absolute;
+    top: 50px; 
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 h1 {
@@ -112,11 +111,15 @@ h1 {
 }
 
 .social-icons {
-    margin-top: 10px; /* Espaço entre o texto e os ícones */
     display: flex; /* Para alinhar os ícones horizontalmente */
     gap: 15px; /* Espaço entre os ícones */
     justify-content: center; /* Opcional: para centralizar os ícones */
     align-items: center; /* Alinha verticalmente se houver tamanhos diferentes */
+    position: absolute; /* Adicione esta linha */
+    bottom: 120px; /* Altere este valor para a distância desejada do rodapé */
+    left: 50%; /* Para centralizar horizontalmente */
+    transform: translateX(-50%); /* Para centralizar horizontalmente */
+    line-height: 1;
 }
 
 .social-icons a {
@@ -124,22 +127,21 @@ h1 {
     font-size: 24px; /* Tamanho dos ícones (ajuste conforme necessário) */
     transition: color 0.3s ease; /* Transição suave para o hover */
     text-decoration: none; /* Remove sublinhado dos links */
+    display: flex; /* Transforma o <a> em um contêiner flex */
+    align-items: center; /* Centraliza verticalmente o ícone dentro do <a> */
+    justify-content: center;
 }
 
-/* Cores padrão dos ícones */
 .social-icons .fa-instagram {
-    color: #ffffff; /* Cor padrão branca */
-    transition: color 0.3s ease; /* Transição suave para a cor */
+    font-size: 27px;
 }
 
 .social-icons .fa-facebook {
-    color: #ffffff; /* Cor padrão branca */
-    transition: color 0.3s ease;
+    font-size: 25px;
 }
 
-.social-icons .fa-tiktok {
-    color: #ffffff; /* Cor padrão branca */
-    transition: color 0.3s ease;
+.social-icons a span {
+    transition: color 0.3s ease; /* Aplique aqui uma vez */
 }
 
 /* Cores ao passar o mouse */
@@ -151,10 +153,6 @@ h1 {
     color: #1877F2; /* Cor original do Facebook */
 }
 
-.social-icons .fa-tiktok:hover {
-    color: #000000; /* TikTok geralmente usa preto ou o ícone colorido */
-}
-
 /* Estilo específico para o ícone do Kwai se for uma imagem */
 .social-icons img {
     width: 24px; /* Garante que o ícone Kwai tenha o mesmo tamanho dos outros */
@@ -163,10 +161,15 @@ h1 {
 }
 
 .highlight-text {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
     text-shadow: var(--text-shadow);
     max-width: 800px;
+}
+
+.highlight-underline-italic {
+    font-style: italic;
+    text-decoration: underline;
 }
 
 .content-section {
@@ -187,13 +190,29 @@ h1 {
     font-weight: 700;
 }
 
+.parallax-content h4 {
+    font-size: 1.5rem; /* Ajuste o tamanho da fonte conforme necessário */
+    font-weight: 300; /* Para uma linha mais fina (light) */
+    background: linear-gradient(to right, white, var(--gradient-end-blue)); /* Mesmo gradiente do h1 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent; /* Necessário para o -webkit-text-fill-color funcionar */
+    background-size: 200% auto; /* Para o efeito de brilho */
+    animation: shine 3.8s linear infinite; /* Aplica a mesma animação, se desejar */
+    text-shadow: none; /* Remove a sombra tradicional se usar text-fill-color */
+    margin-top: 24px; /* Ajuste a margem superior para posicioná-lo abaixo do h1 e logo */
+    margin-bottom: 20px; /* Espaçamento abaixo do h4 */
+    padding: 10px;
+}
+
 .carrossel-section {
-    background-color: #149BD7;
+    background-color: #D3F0FC;
 }
 
 .carrossel-section h2 {
-    color: white; 
+    color: #00AFEF; 
     font-style: italic;
+    font-weight: 400;
 }
 
 .cor-piscina {
@@ -211,7 +230,7 @@ h1 {
     overflow: hidden;
     background: #eee;
     margin: 0 auto;
-    height: 0;
+    min-height: 200px;
 }
 
 .map-container iframe {
@@ -222,6 +241,7 @@ h1 {
     height: 100%;
     border: 0;
 }
+
 
 #visit-section p {
     padding-bottom: 15px;
@@ -383,6 +403,152 @@ h1 {
     z-index: 1000; /* Garante que o botão fique acima de outros elementos */
 }
 
+/* ============================================ */
+/* SEÇÃO TRABALHE CONOSCO                       */
+/* ============================================ */
+.visit-content-wrapper {
+    display: flex;
+    flex-direction: column; /* Padrão para telas pequenas: uma coluna */
+    gap: 100px; /* Espaço entre as seções em layout vertical */
+    margin: 0 auto; /* Centraliza o wrapper */
+    padding: 0 20px; /* Padding nas laterais */
+}
+
+@media (min-width: 769px) {
+    .visit-content-wrapper {
+        flex-direction: row; /* Layout horizontal para telas maiores */
+        align-items: flex-start; /* Alinha o conteúdo ao topo das colunas */
+        gap: 60px; /* Mais espaço entre as colunas */
+    }
+
+    .visit-us-container,
+    .work-with-us-container {
+        flex: 1; /* Faz com que ambos os contêineres ocupem o mesmo espaço */
+        display: flex; /* Adiciona flexbox a estes contêineres */
+        justify-content: center; /* Centraliza o cartão dentro de sua metade */
+        align-items: flex-start;
+    }
+
+    /* Ajusta a largura máxima do mapa para não ser muito grande na coluna */
+    .visit-us-container .map-container {
+        max-width: 100%;
+    }
+}
+
+.visit-card {
+    background-color: var(--card-bg);
+    border-radius: 15px; /* Cantos arredondados */
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center; /* Centraliza o conteúdo dentro do cartão */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribui o espaço entre os itens */
+    width: 100%; /* Permite que o cartão use a largura total de seu contêiner flex */
+    /*max-width: 600px;*/     
+}
+
+/* Centraliza o título "Venha nos visitar" dentro do card */
+.visit-card h3 {
+    text-align: center;
+    margin-bottom: 20px; /* Ajusta o espaçamento abaixo do título */
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Ajusta o espaçamento do parágrafo de endereço */
+.visit-card p {
+    margin-bottom: 20px;
+}
+
+/* Ajusta o mapa dentro do cartão */
+.visit-card .map-container {
+    max-width: 100%; /* Garante que o mapa não ultrapasse a largura do cartão */
+    margin: 0 auto; /* Centraliza o mapa */
+    aspect-ratio: 16 / 9;
+}
+
+.work-card {
+    background-color: var(--card-bg);
+    border-radius: 15px; /* Cantos arredondados */
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: left; /* Alinha o texto à esquerda dentro do cartão */
+    width: 100%;
+}
+
+.work-card h3 {
+    text-align: center; /* Centraliza o título "Trabalhe Conosco" */
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #333;
+}
+
+/* Estilos do Acordeão */
+.accordion-item {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 15px 20px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-header:hover {
+    background-color: #e0e0e0;
+}
+
+.accordion-header::after {
+    content: '\002B'; /* Sinal de mais */
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.active::after {
+    content: '\2212'; /* Sinal de menos */
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding: 0 20px;
+    background-color: #fff;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+}
+
+.accordion-content p {
+    margin-bottom: 15px;
+    padding-top: 15px; /* Espaçamento superior para o parágrafo */
+    line-height: 1.8;
+}
+
+.accordion-content.show {
+    max-height: 300px; /* Altura máxima arbitrária, ajuste conforme o conteúdo */
+    padding-bottom: 20px;
+}
+
+/* Estilo para o botão de WhatsApp dentro do acordeão */
+.small-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    margin-top: 10px; /* Espaço acima do botão */
+    margin-bottom: 10px; /* Espaço abaixo do botão */
+}
 
 /* ============================================ */
 /* RODAPÉ                                       */
@@ -415,7 +581,7 @@ footer a:hover {
         font-size: 2.2rem;
     }
     .highlight-text {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
     .content-section h2 {
         font-size: 2rem;
@@ -424,7 +590,7 @@ footer a:hover {
         min-height: 60vh;
     }
     #section1 {
-        min-height: 80vh;
+        min-height: 100vh;
     }
     .floating-whatsapp-button {
         bottom: 20px;
@@ -441,13 +607,13 @@ footer a:hover {
         font-size: 1.2rem;
     }
     .logo {
-        max-width: 100px;
+        max-width: 80px;
     }
     .parallax-section {
         min-height: 50vh;
     }
     #section1 {
-        min-height: 70vh;
+        min-height: 100vh;
     }
     .content-section {
         padding: 40px 15px;
@@ -470,7 +636,6 @@ footer a:hover {
 
 @media (min-width: 769px) {
     #visit-section {
-        max-width: 900px; /* Largura máxima para a seção de visita */
         margin: 0 auto;   /* Centraliza a seção de visita */
         padding-left: 20px;
         padding-right: 20px;
@@ -478,7 +643,6 @@ footer a:hover {
 
     .map-container {
         width: 100%;
-        max-width: 600px; /* Define a largura máxima */
         margin: 0 auto;  /* Garante o centralizamento */
     }
 }

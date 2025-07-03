@@ -76,7 +76,7 @@ body {
 /* ESTILOS DAS SEÇÕES                           */
 /* ============================================ */
 .logo {
-    max-width: 120px;
+    max-width: 250px;
     position: absolute;
     top: 50px; 
     left: 50%;
@@ -582,8 +582,11 @@ footer a:hover {
         min-height: 100vh;
     }
     .floating-whatsapp-button {
-        bottom: 20px;
+        bottom: 50px;
         right: 20px;
+    }
+    .logo {
+        max-width: 150px;
     }
 }
 
@@ -596,7 +599,7 @@ footer a:hover {
         font-size: 1.2rem;
     }
     .logo {
-        max-width: 80px;
+        max-width: 120px;
     }
     .parallax-section {
         min-height: 50vh;
@@ -618,7 +621,7 @@ footer a:hover {
         font-size: 1rem;
     }
     .floating-whatsapp-button {
-        bottom: 15px;
+        bottom: 30px;
         right: 15px;
     }
 }

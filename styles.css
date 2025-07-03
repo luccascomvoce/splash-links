@@ -567,7 +567,7 @@ footer a:hover {
 /* Tablets e telas menores */
 @media (max-width: 768px) {
     h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
     .highlight-text {
         font-size: 2rem;
@@ -593,10 +593,10 @@ footer a:hover {
 /* Dispositivos móveis */
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
     .highlight-text {
-        font-size: 1.2rem;
+        font-size: 2rem;
     }
     .logo {
         max-width: 120px;

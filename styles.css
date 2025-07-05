@@ -7,16 +7,15 @@
     --card-bg: rgba(255, 255, 255, 0.5);
     --text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 
-    /* Paleta de cores pastéis para os nomes das piscinas */
     --pastel-blue: #A3BFFA;
     --pastel-purple: #D6BCFA;
     --pastel-yellow: #FEF9A7;
     --pastel-green: #A7F3D0;
 
-    --quality-gold: white;   /* Dourado para "Qualidade" */
-    --trust-blue: #ADD8E6;     /* Azul royal para "Confiança" */
-    --security-green: #87CEEB; /* Verde mar para "Segurança" */
-    --pastel-pink-bg: rgba(229, 0, 126, 0.5);  /* Rosa pastel para o fundo do nome */
+    --quality-gold: white;
+    --trust-blue: #ADD8E6;
+    --security-green: #87CEEB;
+    --pastel-pink-bg: rgba(229, 0, 126, 0.5);
     --gradient-end-blue: #6BC8F1;
 }
 
@@ -140,20 +139,12 @@ h1 {
     transition: color 0.3s ease; 
 }
 
-/* Cores ao passar o mouse */
 .social-icons .fa-instagram:hover {
     color: #E4405F; 
 }
 
 .social-icons .fa-facebook:hover {
     color: #1877F2; 
-}
-
-/* Estilo específico para o ícone do Kwai se for uma imagem */
-.social-icons img {
-    width: 24px; 
-    height: 24px;
-    vertical-align: middle; 
 }
 
 .highlight-text {
@@ -215,14 +206,13 @@ h1 {
 }
 
 .cor-piscina {
-    color: #149BD7; /* Azul */
+    color: #149BD7;
 }
 
 .cor-splash {
-    color: #E5007E; /* Rosa */
+    color: #E5007E;
 }
 
-/* Estilos para o mapa embutido */
 .map-container {
     position: relative;
     padding-bottom: 35%;
@@ -240,7 +230,6 @@ h1 {
     height: 100%;
     border: 0;
 }
-
 
 #visit-section p {
     padding-bottom: 15px;
@@ -336,13 +325,11 @@ h1 {
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
-/* Cores de fundo para os nomes dos modelos */
 .pool-name.color-1 { color: var(--pastel-blue); }
 .pool-name.color-2 { color: var(--pastel-purple); }
 .pool-name.color-3 { color: var(--pastel-yellow); }
 .pool-name.color-4 { color: var(--pastel-green); }
 
-/* Estilos para navegação e paginação do Swiper */
 .swiper-button-next, .swiper-button-prev {
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
@@ -423,7 +410,6 @@ h1 {
         align-items: flex-start;
     }
 
-    /* Ajusta a largura máxima do mapa para não ser muito grande na coluna */
     .visit-us-container .map-container {
         max-width: 100%;
     }
@@ -441,7 +427,6 @@ h1 {
     width: 100%;
 }
 
-/* Centraliza o título "Venha nos visitar" dentro do card */
 .visit-card h3 {
     text-align: center;
     margin-bottom: 20px;
@@ -449,12 +434,10 @@ h1 {
     color: #333;
 }
 
-/* Ajusta o espaçamento do parágrafo de endereço */
 .visit-card p {
     margin-bottom: 20px;
 }
 
-/* Ajusta o mapa dentro do cartão */
 .visit-card .map-container {
     max-width: 100%;
     margin: 0 auto;
@@ -477,7 +460,6 @@ h1 {
     color: #333;
 }
 
-/* Estilos do Acordeão */
 .accordion-item {
     margin-bottom: 15px;
     border: 1px solid #ddd;
@@ -535,7 +517,6 @@ h1 {
     padding-bottom: 20px;
 }
 
-/* Estilo para o botão de WhatsApp dentro do acordeão */
 .small-button {
     padding: 10px 20px;
     font-size: 1rem;

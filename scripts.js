@@ -1,6 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // ============================================ //
+    // ATRIBUIÇÃO DINÂMICA DO WHATSAPP              //
+    // ============================================ //
+    const whatsappLinks = {
+        financeiro: "https://wa.me/5566996389810?text=Ol%C3%A1%2C%20gostaria%20de%20enviar%20meu%20curr%C3%ADculo.",
+        comercial: "https://wa.me/5566992158275?text=Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!"
+    };
+
+    function setWhatsappLinks() {
+        const comercialLinks = document.querySelectorAll('.zap-comercial');
+        comercialLinks.forEach(link => {
+            link.href = whatsappLinks.comercial;
+        });
+
+        const financeiroLinks = document.querySelectorAll('.zap-financeiro');
+        financeiroLinks.forEach(link => {
+            link.href = whatsappLinks.financeiro;
+        });
+    }
+
+    setWhatsappLinks();
+
+    // ============================================ //
     // LÓGICA DO EFEITO DE PARALAXE                 //
     // ============================================ //
     // Seleciona todas as seções com a classe 'parallax-section'
@@ -79,22 +101,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const accordionHeaders = document.querySelectorAll('.accordion-header');
 
     accordionHeaders.forEach(header => {
-    header.addEventListener('click', function() {
-        const accordionContent = this.nextElementSibling;
-        const currentlyActive = document.querySelector('.accordion-header.active');
-        const isExpanded = this.classList.contains('active');
+        header.addEventListener('click', function() {
+            const accordionContent = this.nextElementSibling;
+            const currentlyActive = document.querySelector('.accordion-header.active');
+            const isExpanded = this.classList.contains('active');
 
-        // Fecha qualquer outro acordeão que esteja aberto
-        if (currentlyActive && currentlyActive !== this) {
-            currentlyActive.classList.remove('active');
-            currentlyActive.setAttribute('aria-expanded', 'false');
-            currentlyActive.nextElementSibling.classList.remove('show');
-        }
+            // Fecha qualquer outro acordeão que esteja aberto
+            if (currentlyActive && currentlyActive !== this) {
+                currentlyActive.classList.remove('active');
+                currentlyActive.setAttribute('aria-expanded', 'false');
+                currentlyActive.nextElementSibling.classList.remove('show');
+            }
 
-        // Alterna a classe 'active' no header
-        this.classList.toggle('active');
-        this.setAttribute('aria-expanded', !isExpanded);
-        accordionContent.classList.toggle('show');
+            // Alterna a classe 'active' no header
+            this.classList.toggle('active');
+            this.setAttribute('aria-expanded', !isExpanded);
+            accordionContent.classList.toggle('show');
+        });
     });
-});
 });

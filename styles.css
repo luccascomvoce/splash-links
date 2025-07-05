@@ -4,7 +4,7 @@
 :root {
     --whatsapp-green: #25D366;
     --dark-footer: #1A1A1A;
-    --card-bg: #F5F5F5;
+    --card-bg: rgba(255, 255, 255, 0.5);
     --text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 
     /* Paleta de cores pastéis para os nomes das piscinas */
@@ -203,6 +203,9 @@ h1 {
 
 .carrossel-section {
     background-color: #D3F0FC;
+    background-image: url('./images/textura.png'), linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 100%);
+    background-size: auto, cover;
+    background-blend-mode: luminosity;
 }
 
 .carrossel-section h2 {
@@ -274,6 +277,7 @@ h1 {
 
 .pool-card {
     background-color: var(--card-bg);
+    backdrop-filter: blur(5px);
     border-radius: 15px;
     padding: 20px;
     text-align: center;
@@ -329,7 +333,7 @@ h1 {
 .pool-name span {
     color: white;
     mix-blend-mode: destination-out;
-    text-shadow: none;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 /* Cores de fundo para os nomes dos modelos */
@@ -413,7 +417,7 @@ h1 {
 
     .visit-us-container,
     .work-with-us-container {
-        flex: 1; 
+        flex: 1;
         display: flex; 
         justify-content: center; 
         align-items: flex-start;

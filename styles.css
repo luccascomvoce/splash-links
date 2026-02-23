@@ -194,7 +194,7 @@ h1 {
 
 .carrossel-section {
     background-color: #D3F0FC;
-    background-image: url('./images/textura.png'), linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 100%);
+    background-image: url('./images/textura.webp'), linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0,0) 100%);
     background-size: auto, cover;
     background-blend-mode: luminosity;
 }

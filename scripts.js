@@ -1,11 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // ============================================ //
+    // ESTRATÉGIA DE FALLBACK PARA VÍDEO HERO       //
+    // ============================================ //
+    const heroVideo = document.getElementById('waterDropVideo');
+    if (heroVideo) {
+        heroVideo.play().catch(error => {
+            console.warn("Autoplay do vídeo de gotas de água foi impedido pelo navegador (ex: modo de economia de energia). Ocultando o vídeo para exibir apenas a foto de fundo estática.", error);
+            heroVideo.style.display = 'none';
+        });
+    }
+
+    // ============================================ //
     // ATRIBUIÇÃO DINÂMICA DO WHATSAPP              //
     // ============================================ //
     const whatsappLinks = {
-        financeiro: "https://wa.me/5566996389810?text=Ol%C3%A1%2C%20gostaria%20de%20enviar%20meu%20curr%C3%ADculo.",
-        comercial: "https://wa.me/5566992158275?text=Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!"
+        financeiro: "https://wa.me/5519989064820?text=Ol%C3%A1%2C%20gostaria%20de%20enviar%20meu%20curr%C3%ADculo.",
+        comercial: "https://wa.me/5519989064820?text=Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!"
     };
 
     function setWhatsappLinks() {

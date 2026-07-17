@@ -253,10 +253,37 @@ document.addEventListener('DOMContentLoaded', function() {
             ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, w, h);
         }
 
-        function drawFrame() {
+        let lastFrameTime = null;
+
+        function drawFrame(timestamp) {
             if (isCleaned) {
                 animationId = null;
+                lastFrameTime = null;
                 return;
+            }
+
+            // Desvanece a máscara do vidro para a água retornar após 5 segundos
+            if (timestamp !== undefined) {
+                if (lastFrameTime !== null) {
+                    const dt = (timestamp - lastFrameTime) / 1000;
+                    const cappedDt = Math.min(dt, 0.1);
+                    if (cappedDt > 0) {
+                        const k = 0.6; // Taxa de decaimento para desvanecer em 5 segundos (~5% de opacidade restante)
+                        const alpha = 1 - Math.exp(-k * cappedDt);
+                        
+                        const prevFilter = maskCtx.filter;
+                        const prevGCO = maskCtx.globalCompositeOperation;
+                        
+                        maskCtx.filter = 'none';
+                        maskCtx.globalCompositeOperation = 'destination-out';
+                        maskCtx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+                        maskCtx.fillRect(0, 0, maskCanvas.width, maskCanvas.height);
+                        
+                        maskCtx.filter = prevFilter;
+                        maskCtx.globalCompositeOperation = prevGCO;
+                    }
+                }
+                lastFrameTime = timestamp;
             }
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -347,8 +374,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 resetTimeout = null;
             }
             if (isCleaned) {
-                // Reinicia a chuva de gotas após 8 segundos de inatividade se estiver limpo
-                resetTimeout = setTimeout(resetWipeEffect, 8000);
+                // Reinicia a chuva de gotas após 5 segundos de inatividade se estiver limpo
+                resetTimeout = setTimeout(resetWipeEffect, 5000);
             }
         }
 
@@ -402,6 +429,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Reativa a animação se estava parada
             if (!animationId) {
+                lastFrameTime = null;
                 animationId = requestAnimationFrame(drawFrame);
             }
 

@@ -1,14 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // ============================================ //
-    // ESTRATÉGIA DE FALLBACK PARA VÍDEO HERO       //
+    // SIMULAÇÃO DE LIMPEZA DE VIDRO INTERATIVA     //
     // ============================================ //
     const heroVideo = document.getElementById('waterDropVideo');
     if (heroVideo) {
-        heroVideo.play().catch(error => {
-            console.warn("Autoplay do vídeo de gotas de água foi impedido pelo navegador (ex: modo de economia de energia). Ocultando o vídeo para exibir apenas a foto de fundo estática.", error);
-            heroVideo.style.display = 'none';
-        });
+        initGlassWipe(heroVideo);
     }
 
     // ============================================ //
@@ -16,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================ //
     const whatsappLinks = {
         financeiro: "https://wa.me/5519989064820?text=Ol%C3%A1%2C%20gostaria%20de%20enviar%20meu%20curr%C3%ADculo.",
-        comercial: "https://wa.me/5519989064820?text=Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento!"
+        comercial: "https://wa.me/5519989064820?text=Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento%21"
     };
 
     function setWhatsappLinks() {
@@ -70,44 +67,48 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================ //
     // INICIALIZAÇÃO DO CARROSSEL (SWIPER.JS)       //
     // ============================================ //
-    const swiper = new Swiper('.swiper', {
-        // Quantidade de slides visíveis
-        slidesPerView: 1,
-        // Espaçamento entre os slides
-        spaceBetween: 20,
-        
-        // Ativa o loop para um carrossel infinito
-        loop: false,
+    if (typeof Swiper !== 'undefined') {
+        const swiper = new Swiper('.swiper', {
+            // Quantidade de slides visíveis
+            slidesPerView: 1,
+            // Espaçamento entre os slides
+            spaceBetween: 20,
+            
+            // Ativa o loop para um carrossel infinito
+            loop: false,
 
-        // Paginação (os "pontos" abaixo do carrossel)
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true, // Permite clicar nos pontos para navegar
-        },
-
-        // Botões de navegação (setas de "próximo" e "anterior")
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        // Configurações de responsividade
-        breakpoints: {
-            // Quando a largura da tela for >= 640px
-            640: {
-                slidesPerView: 2,
-                spaceBetween: 20,
+            // Paginação (os "pontos" abaixo do carrossel)
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true, // Permite clicar nos pontos para navegar
             },
-            // Quando a largura da tela for >= 1024px
-            1024: {
-                slidesPerView: 3,
-                spaceBetween: 30,
-            },
-        },
 
-        // Permite arrastar com o mouse no desktop
-        grabCursor: true,
-    });
+            // Botões de navegação (setas de "próximo" e "anterior")
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+
+            // Configurações de responsividade
+            breakpoints: {
+                // Quando a largura da tela for >= 640px
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                // Quando a largura da tela for >= 1024px
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+            },
+
+            // Permite arrastar com o mouse no desktop
+            grabCursor: true,
+        });
+    } else {
+        console.warn("Swiper library not loaded. Skipping swiper initialization.");
+    }
 
     const accordionHeaders = document.querySelectorAll('.accordion-header');
 
@@ -130,4 +131,303 @@ document.addEventListener('DOMContentLoaded', function() {
             accordionContent.classList.toggle('show');
         });
     });
+
+    // ============================================ //
+    // SIMULAÇÃO DE LIMPEZA DE VIDRO INTERATIVA     //
+    // ============================================ //
+    function initGlassWipe(video) {
+        const section1 = document.getElementById('section1');
+        if (!section1) return;
+
+        const canvas = document.createElement('canvas');
+        const isCanvasSupported = !!(canvas.getContext && canvas.getContext('2d'));
+        if (!isCanvasSupported) return;
+
+        canvas.id = 'glassWipeCanvas';
+        // Insere o canvas logo após o vídeo para manter a hierarquia de camadas (z-index)
+        video.parentNode.insertBefore(canvas, video.nextSibling);
+
+        // Oculta o vídeo visualmente mas o mantém rodando para renderização
+        video.style.position = 'absolute';
+        video.style.width = '1px';
+        video.style.height = '1px';
+        video.style.opacity = '0.01';
+        video.style.pointerEvents = 'none';
+
+        // Tenta reproduzir o vídeo. Caso falhe, limpa o canvas e reverte para o fundo estático.
+        video.play().catch(error => {
+            console.warn("Autoplay do vídeo de gotas de água foi impedido pelo navegador ou falhou. Revertendo para o fundo estático.", error);
+            canvas.remove();
+            video.style.display = 'none';
+        });
+
+        const ctx = canvas.getContext('2d');
+        const maskCanvas = document.createElement('canvas');
+        const maskCtx = maskCanvas.getContext('2d');
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        const wipeRadius = 45; // Tamanho macio do rastro
+        let isCleaned = false;
+        let isFadingOut = false;
+        let resetTimeout = null;
+        let animationId = null;
+
+        // Otimização: Cache do offset da seção em relação ao documento para evitar reflows (getBoundingClientRect) no drag/scroll
+        let sectionPageX = 0;
+        let sectionPageY = 0;
+
+        function updateSectionOffset() {
+            const rect = section1.getBoundingClientRect();
+            sectionPageX = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
+            sectionPageY = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+        }
+
+        function resizeCanvas() {
+            const rect = section1.getBoundingClientRect();
+            const w = Math.ceil(rect.width);
+            const h = Math.ceil(rect.height);
+
+            updateSectionOffset();
+
+            if (canvas.width !== w || canvas.height !== h) {
+                let tempCanvas = null;
+                if (maskCanvas.width > 0 && maskCanvas.height > 0) {
+                    tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = maskCanvas.width;
+                    tempCanvas.height = maskCanvas.height;
+                    tempCanvas.getContext('2d').drawImage(maskCanvas, 0, 0);
+                }
+
+                canvas.width = w;
+                canvas.height = h;
+                maskCanvas.width = w;
+                maskCanvas.height = h;
+
+                // Desativa o filtro temporariamente para redesenhar sem duplicar desfoque
+                if (typeof maskCtx.filter !== 'undefined') {
+                    maskCtx.filter = 'none';
+                }
+
+                if (tempCanvas) {
+                    maskCtx.drawImage(tempCanvas, 0, 0, tempCanvas.width, tempCanvas.height, 0, 0, w, h);
+                } else {
+                    maskCtx.clearRect(0, 0, w, h);
+                }
+
+                // Define o filtro de desfoque suave para os novos traçados
+                if (typeof maskCtx.filter !== 'undefined') {
+                    maskCtx.filter = 'blur(15px)';
+                }
+            }
+        }
+
+        // Executa o redimensionamento e atualização de offsets inicial
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('scroll', updateSectionOffset);
+
+        function drawImageCover(ctx, img, w, h) {
+            const imgW = img.videoWidth || img.width;
+            const imgH = img.videoHeight || img.height;
+            if (!imgW || !imgH) return;
+
+            const imgRatio = imgW / imgH;
+            const canvasRatio = w / h;
+
+            let sx, sy, sWidth, sHeight;
+
+            if (canvasRatio > imgRatio) {
+                sWidth = imgW;
+                sHeight = imgW / canvasRatio;
+                sx = 0;
+                sy = (imgH - sHeight) / 2;
+            } else {
+                sHeight = imgH;
+                sWidth = imgH * canvasRatio;
+                sx = (imgW - sWidth) / 2;
+                sy = 0;
+            }
+
+            ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, w, h);
+        }
+
+        function drawFrame() {
+            if (isCleaned) {
+                animationId = null;
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Renderiza o vídeo em modo "cover" no Canvas
+            drawImageCover(ctx, video, canvas.width, canvas.height);
+
+            // Combina a máscara para recortar as gotas
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.drawImage(maskCanvas, 0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'source-over';
+
+            animationId = requestAnimationFrame(drawFrame);
+        }
+
+        // Inicia o render loop
+        animationId = requestAnimationFrame(drawFrame);
+
+        function getCoordinates(e) {
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const pageX = clientX + (window.pageXOffset || document.documentElement.scrollLeft);
+            const pageY = clientY + (window.pageYOffset || document.documentElement.scrollTop);
+
+            return {
+                x: pageX - sectionPageX,
+                y: pageY - sectionPageY
+            };
+        }
+
+        function drawWipeSpot(x, y) {
+            maskCtx.beginPath();
+            maskCtx.arc(x, y, wipeRadius, 0, Math.PI * 2);
+            maskCtx.fillStyle = 'black';
+            maskCtx.fill();
+        }
+
+        function startWipe(e) {
+            if (isCleaned || isFadingOut) return;
+
+            isDrawing = true;
+            updateSectionOffset();
+            const pos = getCoordinates(e);
+            lastX = pos.x;
+            lastY = pos.y;
+
+            drawWipeSpot(pos.x, pos.y);
+            postponeReset();
+        }
+
+        function moveWipe(e) {
+            if (isCleaned || isFadingOut) return;
+            postponeReset();
+
+            if (!isDrawing) return;
+
+            const pos = getCoordinates(e);
+
+            maskCtx.beginPath();
+            maskCtx.moveTo(lastX, lastY);
+            maskCtx.lineTo(pos.x, pos.y);
+            maskCtx.lineWidth = wipeRadius * 2;
+            maskCtx.lineCap = 'round';
+            maskCtx.lineJoin = 'round';
+            maskCtx.strokeStyle = 'black';
+            maskCtx.stroke();
+
+            lastX = pos.x;
+            lastY = pos.y;
+        }
+
+        function endWipe() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            checkProgress();
+        }
+
+        function postponeReset() {
+            if (resetTimeout) {
+                clearTimeout(resetTimeout);
+                resetTimeout = null;
+            }
+            if (isCleaned) {
+                // Reinicia a chuva de gotas após 8 segundos de inatividade se estiver limpo
+                resetTimeout = setTimeout(resetWipeEffect, 8000);
+            }
+        }
+
+        function checkProgress() {
+            const w = maskCanvas.width;
+            const h = maskCanvas.height;
+            if (w === 0 || h === 0) return;
+
+            try {
+                const imgData = maskCtx.getImageData(0, 0, w, h);
+                const data = imgData.data;
+                let wipedCount = 0;
+                let totalCount = 0;
+
+                const step = 15; // Amostragem otimizada para evitar lentidão
+                for (let y = 0; y < h; y += step) {
+                    for (let x = 0; x < w; x += step) {
+                        const idx = ((y * w) + x) * 4;
+                        if (data[idx + 3] > 50) {
+                            wipedCount++;
+                        }
+                        totalCount++;
+                    }
+                }
+
+                const percent = (wipedCount / totalCount) * 100;
+                if (percent > 85) {
+                    triggerCleanFadeOut();
+                }
+            } catch (err) {
+                console.error("Erro ao calcular porcentagem limpa", err);
+            }
+        }
+
+        function triggerCleanFadeOut() {
+            isFadingOut = true;
+            canvas.classList.add('clean');
+
+            setTimeout(() => {
+                isCleaned = true;
+                isFadingOut = false;
+                postponeReset();
+            }, 1500);
+        }
+
+        function resetWipeEffect() {
+            if (!isCleaned) return;
+
+            // Limpa a máscara do vidro
+            maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+
+            // Reativa a animação se estava parada
+            if (!animationId) {
+                animationId = requestAnimationFrame(drawFrame);
+            }
+
+            // Remove o fade out
+            canvas.classList.remove('clean');
+            isCleaned = false;
+            isFadingOut = false;
+
+            if (resetTimeout) {
+                clearTimeout(resetTimeout);
+                resetTimeout = null;
+            }
+        }
+
+        // Eventos para Computadores
+        section1.addEventListener('mousedown', startWipe);
+        section1.addEventListener('mousemove', moveWipe);
+        window.addEventListener('mouseup', endWipe);
+
+        // Eventos para Celulares (Scroll liberado por passive: true)
+        section1.addEventListener('touchstart', startWipe, { passive: true });
+        section1.addEventListener('touchmove', moveWipe, { passive: true });
+        window.addEventListener('touchend', endWipe);
+
+        // Ouvintes extras para adiar o reset
+        section1.addEventListener('mousemove', postponeReset);
+        section1.addEventListener('touchmove', postponeReset, { passive: true });
+    }
 });

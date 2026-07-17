@@ -192,11 +192,15 @@ h1 span {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
 }
 
-.social-icons .fa-instagram:hover {
+.social-icons a span {
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-icons a:hover .fa-instagram {
     color: #E4405F; 
 }
 
-.social-icons .fa-facebook:hover {
+.social-icons a:hover .fa-facebook {
     color: #1877F2; 
 }
 

@@ -345,7 +345,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isCleaned || isFadingOut) return;
             postponeReset();
 
-            if (!isDrawing) return;
+            if (!isDrawing) {
+                // Se for um evento de mouse (não touch), inicia o desenho automaticamente ao mover
+                if (!e.type.startsWith('touch')) {
+                    startWipe(e);
+                }
+                return;
+            }
 
             const pos = getCoordinates(e);
 
@@ -447,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Eventos para Computadores
         section1.addEventListener('mousedown', startWipe);
         section1.addEventListener('mousemove', moveWipe);
-        window.addEventListener('mouseup', endWipe);
+        section1.addEventListener('mouseleave', endWipe);
 
         // Eventos para Celulares (Scroll liberado por passive: true)
         section1.addEventListener('touchstart', startWipe, { passive: true });

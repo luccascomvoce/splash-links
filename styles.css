@@ -235,7 +235,8 @@ h1 span {
 
 .content-section h2 {
     font-size: 2.8rem;
-    margin-bottom: 40px;
+    line-height: 1.2;
+    margin-bottom: 30px;
     font-weight: 800;
     color: var(--text-white);
     letter-spacing: -0.02em;
@@ -714,7 +715,12 @@ footer a:hover {
     }
     .content-section h2,
     .products-header .section-title {
-        font-size: 2.2rem;
+        font-size: 2.1rem;
+        line-height: 1.2;
+    }
+    .products-header .section-subtitle {
+        font-size: 1.2rem;
+        line-height: 1.45;
     }
     .parallax-section {
         min-height: 60vh;
@@ -758,7 +764,12 @@ footer a:hover {
     }
     .content-section h2,
     .products-header .section-title {
-        font-size: 1.8rem;
+        font-size: 1.65rem;
+        line-height: 1.2;
+    }
+    .products-header .section-subtitle {
+        font-size: 1.05rem;
+        line-height: 1.45;
     }
     .content-section h3 {
         font-size: 1.6rem;
@@ -854,6 +865,7 @@ footer a:hover {
 
 .products-header .section-title {
     font-size: 2.8rem;
+    line-height: 1.2;
     font-weight: 800;
     color: var(--text-white);
     letter-spacing: -0.02em;

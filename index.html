@@ -292,12 +292,22 @@
 </head>
 
 <body class="splash-active">
+    <!-- SVG Filter para Refração e Distorção Óptica de Água Realista -->
+    <svg style="position: absolute; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
+        <filter id="water-ripple-distortion" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="2" result="noise">
+                <animate attributeName="baseFrequency" dur="8s" values="0.02 0.04; 0.04 0.02; 0.02 0.04" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="25" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+
     <!-- Splash Screen Overlay -->
     <div id="splash-screen" aria-hidden="true">
         <div id="water-waves-container" class="water-waves-container">
+            <div class="water-wave wave-drop"></div>
             <div class="water-wave wave-1"></div>
             <div class="water-wave wave-2"></div>
-            <div class="water-wave wave-3"></div>
         </div>
         <img src="./images/logo.png" id="splash-logo" class="logo" alt="Splash Piscinas" draggable="false">
     </div>

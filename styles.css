@@ -127,7 +127,7 @@ body.splash-active {
     transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Container e Animações das Ondas de Água Concêntricas Realistas */
+/* Container e Animações das Ondas de Água Concêntricas e Responsivas (Mobile & Desktop) */
 .water-waves-container {
     position: fixed;
     inset: 0;
@@ -138,81 +138,88 @@ body.splash-active {
 
 .water-wave {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 48% 52% 50% 50% / 51% 49% 51% 49%;
+    width: 20px;
+    height: 20px;
+    border-radius: 49% 51% 50% 50% / 50% 49% 51% 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     opacity: 0;
     pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* Impacto Inicial da Gota de Água */
+.water-wave.wave-drop {
+    background: radial-gradient(circle, rgba(0, 175, 239, 0.75) 0%, rgba(0, 119, 200, 0.35) 60%, transparent 100%);
+    box-shadow: 0 0 15px rgba(0, 175, 239, 0.5);
 }
 
 .water-wave.wave-1 {
-    border: 2px solid rgba(0, 119, 200, 0.75);
-    box-shadow: 0 0 20px rgba(0, 119, 200, 0.4), inset 0 0 15px rgba(0, 119, 200, 0.3);
+    border: 3px solid rgba(0, 175, 239, 0.6);
+    box-shadow: 0 0 25px rgba(0, 175, 239, 0.35), inset 0 0 20px rgba(0, 175, 239, 0.25);
+    backdrop-filter: url(#water-ripple-distortion) blur(2px) contrast(1.12) brightness(1.1);
+    -webkit-backdrop-filter: blur(2px) contrast(1.12) brightness(1.1);
 }
 
 .water-wave.wave-2 {
-    border: 2px solid rgba(0, 92, 158, 0.65);
-    box-shadow: 0 0 25px rgba(0, 92, 158, 0.3), inset 0 0 15px rgba(0, 92, 158, 0.2);
+    border: 2px solid rgba(0, 119, 200, 0.5);
+    box-shadow: 0 0 35px rgba(0, 119, 200, 0.3), inset 0 0 20px rgba(0, 119, 200, 0.2);
+    backdrop-filter: url(#water-ripple-distortion) blur(1.5px) contrast(1.08) brightness(1.05);
+    -webkit-backdrop-filter: blur(1.5px) contrast(1.08) brightness(1.05);
 }
 
-.water-wave.wave-3 {
-    border: 2px solid rgba(0, 42, 102, 0.55);
-    box-shadow: 0 0 30px rgba(0, 42, 102, 0.25);
+/* Animações fluidadas e ajustadas para Mobile & Desktop (3.2s) */
+.water-waves-container.active .wave-drop {
+    animation: dropSplashImpact 0.7s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
 }
 
 .water-waves-container.active .wave-1 {
-    animation: ripplePropagate1 2.6s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+    animation: ripplePropagateVmax1 3.2s cubic-bezier(0.08, 0.82, 0.17, 1) 0.15s forwards;
 }
 
 .water-waves-container.active .wave-2 {
-    animation: ripplePropagate2 2.6s cubic-bezier(0.1, 0.8, 0.2, 1) 0.3s forwards;
+    animation: ripplePropagateVmax2 3.2s cubic-bezier(0.08, 0.82, 0.17, 1) 0.45s forwards;
 }
 
-.water-waves-container.active .wave-3 {
-    animation: ripplePropagate3 2.6s cubic-bezier(0.1, 0.8, 0.2, 1) 0.6s forwards;
-}
-
-@keyframes ripplePropagate1 {
+@keyframes dropSplashImpact {
     0% {
-        transform: translate(-50%, -50%) scale(0) rotate(0deg);
-        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.9;
     }
-    50% {
+    60% {
         opacity: 0.7;
     }
     100% {
-        transform: translate(-50%, -50%) scale(90) rotate(45deg);
+        transform: translate(-50%, -50%) scale(8);
         opacity: 0;
     }
 }
 
-@keyframes ripplePropagate2 {
+@keyframes ripplePropagateVmax1 {
     0% {
         transform: translate(-50%, -50%) scale(0) rotate(0deg);
         opacity: 0.85;
     }
-    50% {
+    35% {
         opacity: 0.6;
     }
     100% {
-        transform: translate(-50%, -50%) scale(80) rotate(-30deg);
+        transform: translate(-50%, -50%) scale(140) rotate(35deg);
         opacity: 0;
     }
 }
 
-@keyframes ripplePropagate3 {
+@keyframes ripplePropagateVmax2 {
     0% {
         transform: translate(-50%, -50%) scale(0) rotate(0deg);
         opacity: 0.75;
     }
-    50% {
-        opacity: 0.4;
+    35% {
+        opacity: 0.5;
     }
     100% {
-        transform: translate(-50%, -50%) scale(70) rotate(20deg);
+        transform: translate(-50%, -50%) scale(120) rotate(-25deg);
         opacity: 0;
     }
 }

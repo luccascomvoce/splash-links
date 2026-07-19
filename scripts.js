@@ -83,17 +83,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     wavesContainer.classList.add('active');
                 }
 
-                // Animação rAF de propagação líquida realista (2.6s para uma ondulação suave, serena e majestosa)
-                const splashDuration = 2600; // ms
+                // Animação rAF de propagação líquida de gota d'água (3.2s de expansão fluida até sair da visão)
+                const splashDuration = 3200; // ms
                 const splashStartTime = performance.now();
 
                 function animateSplash(currentTime) {
                     const elapsed = currentTime - splashStartTime;
                     const progress = Math.min(1, elapsed / splashDuration);
                     
-                    // Curva fluida de ondulação de água (easeOutCubic)
+                    // Curva fluida de dispersão de água na superfície (easeOutCubic)
                     const easeProgress = 1 - Math.pow(1 - progress, 3);
-                    const currentRadius = easeProgress * 170;
+                    const currentRadius = easeProgress * 190;
 
                     splashScreen.style.setProperty('--splash-radius', currentRadius + '%');
 

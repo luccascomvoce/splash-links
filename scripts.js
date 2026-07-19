@@ -511,15 +511,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let allProductsData = [];
 
     // ============================================ //
-    // MOTOR 1: ONDULAÇÃO DE ÁGUA NO CANVAS (LÍQUIDO) //
+    // MOTOR 1: REFRAÇÃO REALÍSTICA DE ÁGUA (LIQUID CANVAS) //
     // ============================================ //
     const WaterRippleEngine = (function() {
         const canvas = document.getElementById('products-water-canvas');
         if (!canvas || !productsSection) return null;
 
         const ctx = canvas.getContext('2d');
-        const simW = 120;
-        let simH = 75;
+        const simW = 160;
+        let simH = 90;
         let size = simW * simH;
 
         let buffer1 = new Float32Array(size);
@@ -528,6 +528,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const offCanvas = document.createElement('canvas');
         const offCtx = offCanvas.getContext('2d');
         let imgData = null;
+
+        // Carrega a textura fundo-piscina.png para aplicar refração física 2D real
+        const bgImg = new Image();
+        bgImg.src = './images/fundo-piscina.png';
+        const bgCanvas = document.createElement('canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgData = null;
+        let isBgLoaded = false;
+
+        bgImg.onload = function() {
+            isBgLoaded = true;
+            updateBgData();
+        };
+
+        function updateBgData() {
+            if (!isBgLoaded || !simW || !simH) return;
+            bgCanvas.width = simW;
+            bgCanvas.height = simH;
+            bgCtx.drawImage(bgImg, 0, 0, simW, simH);
+            try {
+                bgData = bgCtx.getImageData(0, 0, simW, simH).data;
+            } catch (e) {
+                console.warn('Não foi possível ler bgData para refração de água', e);
+            }
+        }
 
         let isRunning = false;
         let animId = null;
@@ -550,13 +575,14 @@ document.addEventListener('DOMContentLoaded', function() {
             offCanvas.width = simW;
             offCanvas.height = simH;
             imgData = offCtx.createImageData(simW, simH);
+
+            updateBgData();
         }
 
         function disturb(px, py, radius, strength) {
             if (!canvas.width || !canvas.height) return;
             const cx = (px / canvas.width) * simW;
             const cy = (py / canvas.height) * simH;
-            // Garante raio mínimo de 3.5 células de grade para evitar artefatos de eixos verticais/horizontais
             const r = Math.max(3.5, (radius / canvas.width) * simW);
             const rSq = r * r;
 
@@ -572,7 +598,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const dSq = dx * dx + dy * dy;
                     if (dSq < rSq) {
                         const dist = Math.sqrt(dSq);
-                        // Suavização por Cosseno (Gaussian Bell) para ondas perfeitamente circulares e orgânicas
+                        // Gaussian Bell Falloff para propagação de ondas perfeitamente circulares
                         const falloff = 0.5 * (1 + Math.cos((dist / r) * Math.PI));
                         const idx = y * simW + x;
                         buffer1[idx] += strength * falloff;
@@ -582,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function updateSimulation() {
-            // Equação de Ondas 2D com amortecimento natural e fluido
+            // Equação de Ondas 2D com amortecimento de líquido de piscina
             const w = simW;
             const h = simH;
 
@@ -597,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         buffer1[idx + w]
                     ) * 0.5) - buffer2[idx];
 
-                    buffer2[idx] *= 0.97; // Amortecimento suave e cristalino da água
+                    buffer2[idx] *= 0.96; // Amortecimento suave e cristalino da água
                 }
             }
 
@@ -619,26 +645,42 @@ document.addEventListener('DOMContentLoaded', function() {
                     let idx = row + x;
                     let val = buffer1[idx];
 
-                    // Variação de normais para ondas de água circulares e translúcidas
+                    // Variação de normais para refração real da superfície da água
                     let dx = buffer1[idx + 1] - buffer1[idx - 1];
                     let dy = buffer1[idx + w] - buffer1[idx - w];
 
-                    let specular = Math.max(0, (-dx - dy) * 0.7);
-                    let intensity = Math.min(255, Math.abs(val) * 0.4 + specular * 10);
-
                     let pixelIdx = idx * 4;
-                    // Tom azul água cristalina translúcida e suave
-                    data[pixelIdx]     = Math.min(255, 0 + intensity * 0.2);                      // R
-                    data[pixelIdx + 1] = Math.min(255, 80 + intensity * 0.4 + specular * 0.8);    // G
-                    data[pixelIdx + 2] = Math.min(255, 160 + intensity * 0.4 + specular * 1.0);   // B
-                    data[pixelIdx + 3] = Math.min(45, Math.abs(val) * 0.4 + specular * 8);        // Transparência elevada (~15-18%)
+
+                    if (bgData && isBgLoaded) {
+                        // Refração Física 2D: Distorce a imagem de fundo (fundo-piscina.png) com base na inclinação da onda
+                        let refX = Math.min(w - 1, Math.max(0, Math.floor(x + dx * 0.45)));
+                        let refY = Math.min(h - 1, Math.max(0, Math.floor(y + dy * 0.45)));
+                        let refIdx = (refY * w + refX) * 4;
+
+                        // Brilho cáustico sutil nas cristas da onda
+                        let caustic = (-dx - dy) * 1.6;
+
+                        data[pixelIdx]     = Math.min(255, Math.max(0, bgData[refIdx] + caustic * 8));
+                        data[pixelIdx + 1] = Math.min(255, Math.max(0, bgData[refIdx + 1] + caustic * 18 + Math.abs(val) * 0.08));
+                        data[pixelIdx + 2] = Math.min(255, Math.max(0, bgData[refIdx + 2] + caustic * 26 + Math.abs(val) * 0.15));
+                        data[pixelIdx + 3] = 255;
+                    } else {
+                        // Fallback de refração líquida translúcida
+                        let specular = Math.max(0, (-dx - dy) * 0.7);
+                        let intensity = Math.min(255, Math.abs(val) * 0.4 + specular * 10);
+
+                        data[pixelIdx]     = Math.min(255, 0 + intensity * 0.2);
+                        data[pixelIdx + 1] = Math.min(255, 80 + intensity * 0.4 + specular * 0.8);
+                        data[pixelIdx + 2] = Math.min(255, 160 + intensity * 0.4 + specular * 1.0);
+                        data[pixelIdx + 3] = Math.min(45, Math.abs(val) * 0.4 + specular * 8);
+                    }
                 }
             }
 
             offCtx.putImageData(imgData, 0, 0);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Desenha suavemente com interpolação bicúbica/linear do navegador
+            // Desenha com interpolação bicúbica/linear do navegador
             ctx.drawImage(offCanvas, 0, 0, canvas.width, canvas.height);
 
             // Micro-gotas em repouso (Garoa d'água ambiente muito discreta)
@@ -743,9 +785,9 @@ document.addEventListener('DOMContentLoaded', function() {
             mouseY = clientY - gridRect.top;
             isMouseOver = true;
 
-            // Perturbação circular sutil e fluida sob o cursor no canvas de água
+            // Transmite a perturbação para o motor de refração física da água no canvas
             if (WaterRippleEngine) {
-                WaterRippleEngine.disturb(secX, secY, 28, 45);
+                WaterRippleEngine.disturb(secX, secY, 32, 60);
             }
         }
 

@@ -958,7 +958,7 @@ footer a:hover {
     height: 100%;
     z-index: 1;
     pointer-events: none;
-    opacity: 1.0;
+    opacity: 0.70;
 }
 
 /* Grid do Mosaico Dinâmico 100% Width com Quadrados Menores */

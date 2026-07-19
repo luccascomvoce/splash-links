@@ -663,7 +663,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         data[pixelIdx]     = Math.min(255, Math.max(0, bgData[refIdx] + caustic * 8));
                         data[pixelIdx + 1] = Math.min(255, Math.max(0, bgData[refIdx + 1] + caustic * 18 + Math.abs(val) * 0.08));
                         data[pixelIdx + 2] = Math.min(255, Math.max(0, bgData[refIdx + 2] + caustic * 26 + Math.abs(val) * 0.15));
-                        data[pixelIdx + 3] = 255;
+                        
+                        // Opacidade dinâmica cristalina: sutil e translúcido (mostra o fundo e destaca as ondas do dedo)
+                        let waveEnergy = (Math.abs(dx) + Math.abs(dy)) * 22 + Math.abs(val) * 0.35 + Math.max(0, caustic) * 9;
+                        data[pixelIdx + 3] = Math.min(130, Math.max(12, Math.floor(12 + waveEnergy)));
                     } else {
                         // Fallback de refração líquida translúcida
                         let specular = Math.max(0, (-dx - dy) * 0.7);

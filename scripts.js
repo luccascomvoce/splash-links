@@ -801,39 +801,39 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!isRunning) return;
 
             const time = timestamp * 0.002;
-            const swellRadius = 110;    // Raio suave no card sob o cursor
-            const displaceRadius = 200; // Raio sutil para vizinhos próximos
+            const swellRadius = 160;    // Raio de ampliação do card sob o mouse
+            const displaceRadius = 300; // Raio de afastamento conectado dos vizinhos
 
             cardsData.forEach(card => {
-                // 1. Movimento orgânico suave de flutuação em repouso
-                const idleY = Math.sin(time + card.floatPhase) * 2.2;
-                const idleRot = Math.cos(time * 0.7 + card.floatPhase) * 0.4;
+                // 1. Movimento orgânico de flutuação em repouso
+                const idleY = Math.sin(time + card.floatPhase) * 3.5;
+                const idleRot = Math.cos(time * 0.7 + card.floatPhase) * 0.6;
 
                 let targetScale = 1.0;
                 let targetPushX = 0;
                 let targetPushY = 0;
 
-                // 2. Interação fluida e harmoniosa com o Cursor/Toque
+                // 2. Campo de Força Líquido Conectado
                 if (isMouseOver) {
                     const dx = card.cx - mouseX;
                     const dy = card.cy - mouseY;
                     const dist = Math.hypot(dx, dy);
 
                     if (dist < swellRadius) {
-                        // Card sob o cursor -> Elevação suave (1.05x)
+                        // Card sob o cursor -> Crescimento marcante (1.15x) e elevação flutuante da água (-6px)
                         const factor = 1 - (dist / swellRadius);
-                        targetScale = 1.0 + (factor * 0.05); 
-                        targetPushY = -2.5;
+                        targetScale = 1.0 + (factor * 0.15); 
+                        targetPushY = -6.0;
                         card.el.classList.add('is-active');
                     } else if (dist < displaceRadius) {
-                        // Vizinhos próximos -> Deslocamento fluido contido (7px)
+                        // Cards vizinhos -> Afastam-se fisicamente (18px) e encolhem levemente na onda (0.955x)
                         const factor = 1 - ((dist - swellRadius) / (displaceRadius - swellRadius));
-                        const pushForce = factor * 7.0; 
+                        const pushForce = factor * 18.0; 
                         const angle = Math.atan2(dy, dx);
 
                         targetPushX = Math.cos(angle) * pushForce;
                         targetPushY = Math.sin(angle) * pushForce;
-                        targetScale = 1.0 - (factor * 0.02); // Leve depressão líquida (0.98x)
+                        targetScale = 1.0 - (factor * 0.045); 
                         card.el.classList.remove('is-active');
                     } else {
                         card.el.classList.remove('is-active');
@@ -842,11 +842,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.el.classList.remove('is-active');
                 }
 
-                // 3. Física de Lerp/Spring suave e cadenciada (sem solavancos)
-                card.curScale += (targetScale - card.curScale) * 0.08;
-                card.curX += (targetPushX - card.curX) * 0.08;
-                card.curY += (targetPushY - card.curY) * 0.08;
-                card.curRot += (idleRot - card.curRot) * 0.08;
+                // 3. Física de Lerp/Spring fluida e elástica (deixa rastro orgânico de encolhimento)
+                card.curScale += (targetScale - card.curScale) * 0.12;
+                card.curX += (targetPushX - card.curX) * 0.10;
+                card.curY += (targetPushY - card.curY) * 0.10;
+                card.curRot += (idleRot - card.curRot) * 0.09;
 
                 // 4. Aplica a transformação 3D acelerada por GPU
                 const totalY = card.curY + idleY;

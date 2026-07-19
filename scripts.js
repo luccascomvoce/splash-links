@@ -816,39 +816,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 let targetPushX = 0;
                 let targetPushY = 0;
 
-                // 2. Campo de Força Líquido Conectado
+                // 2. Campo de Força Líquido Conectado (Expansão e Encolhimento Intensos)
                 if (isMouseOver) {
                     const dx = card.cx - mouseX;
                     const dy = card.cy - mouseY;
                     const dist = Math.hypot(dx, dy);
 
                     if (dist < swellRadius) {
-                        // Card sob o cursor -> Crescimento marcante (1.15x) e elevação flutuante da água (-6px)
+                        // Card sob o cursor -> Crescimento marcante e intenso (1.32x) e elevação flutuante (-10px)
                         const factor = 1 - (dist / swellRadius);
-                        targetScale = 1.0 + (factor * 0.15); 
-                        targetPushY = -6.0;
+                        targetScale = 1.0 + (factor * 0.32); 
+                        targetPushY = -10.0;
                         card.el.classList.add('is-active');
                     } else if (dist < displaceRadius) {
-                        // Cards vizinhos -> Afastam-se fisicamente (18px) e encolhem levemente na onda (0.955x)
+                        // Cards vizinhos -> Afastamento forte (26px) e encolhimento acentuado (0.85x)
                         const factor = 1 - ((dist - swellRadius) / (displaceRadius - swellRadius));
-                        const pushForce = factor * 18.0; 
+                        const pushForce = factor * 26.0; 
                         const angle = Math.atan2(dy, dx);
 
                         targetPushX = Math.cos(angle) * pushForce;
                         targetPushY = Math.sin(angle) * pushForce;
-                        targetScale = 1.0 - (factor * 0.045); 
+                        targetScale = 1.0 - (factor * 0.15); 
                         card.el.classList.remove('is-active');
                     } else {
+                        // Demais cards do mosaico -> Encolhem para 0.88x para criar foco total no card ativo
+                        targetScale = 0.88;
                         card.el.classList.remove('is-active');
                     }
                 } else {
                     card.el.classList.remove('is-active');
                 }
 
-                // 3. Física de Lerp/Spring fluida e elástica (deixa rastro orgânico de encolhimento)
-                card.curScale += (targetScale - card.curScale) * 0.12;
-                card.curX += (targetPushX - card.curX) * 0.10;
-                card.curY += (targetPushY - card.curY) * 0.10;
+                // 3. Física de Lerp/Spring fluida e elástica
+                card.curScale += (targetScale - card.curScale) * 0.14;
+                card.curX += (targetPushX - card.curX) * 0.12;
+                card.curY += (targetPushY - card.curY) * 0.12;
                 card.curRot += (idleRot - card.curRot) * 0.09;
 
                 // 4. Aplica a transformação 3D acelerada por GPU

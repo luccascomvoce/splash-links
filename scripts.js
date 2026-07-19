@@ -502,12 +502,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Elementos do Modal
     const modalImage = document.getElementById('modal-product-image');
-    const modalBadge = document.getElementById('modal-product-badge');
     const modalTitle = document.getElementById('modal-product-title');
     const modalCategory = document.getElementById('modal-product-category');
     const modalDescription = document.getElementById('modal-product-description');
     const modalZapBtn = document.getElementById('modal-product-zap-btn');
-    const modalOfficialLink = document.getElementById('modal-product-official-link');
 
     let allProductsData = [];
 
@@ -555,10 +553,8 @@ document.addEventListener('DOMContentLoaded', function() {
         mosaicGrid.innerHTML = filtered.map(product => {
             const sizeClass = product.size ? `size-${product.size}` : 'size-small';
             const isHighlight = product.is_destaque;
-            const categoryLabel = (product.categories && product.categories.length > 0) ? product.categories[0] : 'Splash Piscinas';
             const defaultImg = 'https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp';
             const imgSrc = product.image || defaultImg;
-            const zapUrl = getProductWhatsappUrl(product.title);
 
             return `
                 <div class="product-card ${sizeClass}" data-id="${product.id}" tabindex="0" role="button" aria-label="${product.title}">
@@ -568,11 +564,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="product-card-overlay"></div>
                     ${isHighlight ? `<span class="product-badge-tag highlight"><i class="fa fa-star"></i> Destaque</span>` : ''}
                     <div class="product-card-content">
-                        <span class="product-card-cat">${categoryLabel}</span>
                         <h3 class="product-card-title">${product.title}</h3>
-                        <a href="${zapUrl}" target="_blank" rel="noopener noreferrer" class="product-card-btn zap-product-btn" onclick="event.stopPropagation();">
-                            <span class="fab fa-whatsapp"></span> Orçamento
-                        </a>
                     </div>
                 </div>
             `;
@@ -624,21 +616,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (modalTitle) modalTitle.textContent = product.title;
         if (modalCategory) modalCategory.textContent = categoryLabel;
 
-        if (modalBadge) {
-            if (product.is_destaque) {
-                modalBadge.style.display = 'inline-block';
-                modalBadge.textContent = '★ Destaque Splash';
-            } else {
-                modalBadge.style.display = 'none';
-            }
-        }
-
         if (modalZapBtn) {
             modalZapBtn.href = zapUrl;
-        }
-
-        if (modalOfficialLink) {
-            modalOfficialLink.href = product.url || 'https://www.splashpiscinas.com';
         }
 
         productModal.classList.add('open');

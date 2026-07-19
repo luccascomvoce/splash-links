@@ -1,6 +1,122 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // ============================================ //
+    // ANIMAÇÃO DA SPLASH SCREEN & FLIP LOGO        //
+    // ============================================ //
+    function initSplashScreen() {
+        const splashScreen = document.getElementById('splash-screen');
+        const splashLogo = document.getElementById('splash-logo');
+        const targetLogo = document.getElementById('target-logo');
+        const heroVideo = document.getElementById('waterDropVideo');
+
+        if (!splashScreen || !splashLogo || !targetLogo) return;
+
+        let isDismissed = false;
+
+        // Oculta o logo original do cabeçalho inicialmente para evitar duplicação visual
+        targetLogo.classList.add('target-hidden');
+
+        function preventScroll(e) {
+            if (!isDismissed) {
+                e.preventDefault();
+            }
+        }
+
+        try {
+            window.addEventListener('wheel', preventScroll, { passive: false });
+            window.addEventListener('touchmove', preventScroll, { passive: false });
+        } catch (err) {}
+
+        function dismissSplash() {
+            if (isDismissed) return;
+            isDismissed = true;
+
+            try {
+                window.removeEventListener('wheel', preventScroll);
+                window.removeEventListener('touchmove', preventScroll);
+            } catch (err) {}
+
+            // Verifica preferência de movimento reduzido (acessibilidade)
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (prefersReducedMotion) {
+                targetLogo.classList.remove('target-hidden');
+                splashScreen.classList.add('splash-hidden');
+                document.body.classList.remove('splash-active');
+                setTimeout(() => { splashScreen.style.display = 'none'; }, 800);
+                return;
+            }
+
+            // FLIP Animation:
+            // 1. Obter coordenadas e dimensões atuais
+            const splashRect = splashLogo.getBoundingClientRect();
+            const targetRect = targetLogo.getBoundingClientRect();
+
+            // Evita cálculos inválidos se os elementos não tiverem dimensão renderizada
+            if (!splashRect || !targetRect || splashRect.width === 0 || targetRect.width === 0) {
+                targetLogo.classList.remove('target-hidden');
+                splashScreen.classList.add('splash-hidden');
+                document.body.classList.remove('splash-active');
+                setTimeout(() => { splashScreen.style.display = 'none'; }, 800);
+                return;
+            }
+
+            // 2. Calcular deltas da quina superior esquerda (top-left origin) e escala milimétrica
+            const deltaX = targetRect.left - splashRect.left;
+            const deltaY = targetRect.top - splashRect.top;
+
+            const scaleX = targetRect.width / splashRect.width;
+            const scaleY = targetRect.height / splashRect.height;
+
+            // 3. Ativar transição e aplicar a transformação FLIP com origem em 0 0
+            splashLogo.style.transformOrigin = '0 0';
+            splashLogo.classList.add('animating');
+            splashLogo.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scaleX}, ${scaleY})`;
+
+            // 4. Iniciar o fade out do fundo azul em paralelo
+            splashScreen.classList.add('splash-hidden');
+
+            // 5. Revela o logo de destino instantaneamente por baixo antes de desmontar o splash
+            setTimeout(() => {
+                targetLogo.classList.remove('target-hidden');
+            }, 760);
+
+            setTimeout(() => {
+                document.body.classList.remove('splash-active');
+                splashScreen.style.display = 'none';
+            }, 800);
+        }
+
+        // Timeout máximo de segurança (2.5s) em conexões lentas
+        const MAX_SAFETY_TIMEOUT = 2500;
+        const safetyTimer = setTimeout(dismissSplash, MAX_SAFETY_TIMEOUT);
+
+        function checkReadyAndDismiss() {
+            if (!heroVideo || heroVideo.readyState >= 2) {
+                clearTimeout(safetyTimer);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(dismissSplash);
+                });
+            } else {
+                heroVideo.addEventListener('loadeddata', function onLoadedData() {
+                    heroVideo.removeEventListener('loadeddata', onLoadedData);
+                    clearTimeout(safetyTimer);
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(dismissSplash);
+                    });
+                }, { once: true });
+            }
+        }
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            checkReadyAndDismiss();
+        }
+        window.addEventListener('load', checkReadyAndDismiss, { once: true });
+    }
+
+    initSplashScreen();
+
+    // ============================================ //
     // SIMULAÇÃO DE LIMPEZA DE VIDRO INTERATIVA     //
     // ============================================ //
     const heroVideo = document.getElementById('waterDropVideo');

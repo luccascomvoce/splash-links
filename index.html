@@ -291,14 +291,22 @@
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
 
-<body>
+<body class="splash-active">
+    <!-- Splash Screen Overlay -->
+    <div id="splash-screen" aria-hidden="true">
+        <div class="splash-backdrop"></div>
+        <div class="splash-content">
+            <img src="./images/logo.png" id="splash-logo" class="logo" alt="Splash Piscinas" draggable="false">
+        </div>
+    </div>
+
     <header class="parallax-section" id="section1">
         <video id="waterDropVideo" autoplay loop muted playsinline aria-hidden="true">
             <source src="./images/gotas.mp4" type="video/mp4">
             Seu navegador não suporta a tag de vídeo.
         </video>
         <div class="parallax-content">
-            <img src="./images/logo.png" alt="Logo Splash Piscinas" class="logo" draggable="false">
+            <img src="./images/logo.png" alt="Logo Splash Piscinas" class="logo" id="target-logo" draggable="false">
             <h1>
                 <span class="quality">Qualidade.</span>
                 <span class="trust">Confiança.</span>

@@ -35,30 +35,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================ //
     // Seleciona todas as seções com a classe 'parallax-section'
     const parallaxSections = document.querySelectorAll('.parallax-section');
+    let parallaxTicking = false;
 
     // Função para atualizar a posição do background no scroll
     function handleParallax() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
         parallaxSections.forEach(section => {
-            // A velocidade do efeito. Valores menores criam um efeito mais sutil.
             const speed = 0.4;
-            // Calcula o deslocamento do background.
-            // O 'offsetTop' pega a distância da seção até o topo do documento.
-            // Subtraindo o 'scrollTop' sabemos o quão "dentro" da viewport a seção está.
             const yPos = (scrollTop - section.offsetTop) * speed;
-            
-            // Aplica a nova posição do background verticalmente.
-            // A posição horizontal permanece '50%' (centro).
             section.style.backgroundPosition = `50% ${yPos}px`;
         });
+        parallaxTicking = false;
     }
 
-    // Adiciona o listener de scroll para ativar o paralaxe
-    // Otimização: A função só será chamada quando a animação do navegador estiver pronta
+    // Adiciona o listener de scroll com rAF throttling e listener passivo
     window.addEventListener('scroll', () => {
-        window.requestAnimationFrame(handleParallax);
-    });
+        if (!parallaxTicking) {
+            window.requestAnimationFrame(handleParallax);
+            parallaxTicking = true;
+        }
+    }, { passive: true });
 
     // Chama a função uma vez no carregamento para definir a posição inicial
     handleParallax();
@@ -463,5 +460,34 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ouvintes extras para adiar o reset
         section1.addEventListener('mousemove', postponeReset);
         section1.addEventListener('touchmove', postponeReset, { passive: true });
+
+        // Otimização de Performance: IntersectionObserver com margem de segurança de 300px
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (!isCleaned && !animationId) {
+                            lastFrameTime = null;
+                            animationId = requestAnimationFrame(drawFrame);
+                        }
+                        if (heroVideo.paused && !isCleaned) {
+                            heroVideo.play().catch(() => {});
+                        }
+                    } else {
+                        if (animationId) {
+                            cancelAnimationFrame(animationId);
+                            animationId = null;
+                        }
+                        if (!heroVideo.paused) {
+                            heroVideo.pause();
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '300px 0px'
+            });
+
+            observer.observe(section1);
+        }
     }
 });

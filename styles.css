@@ -59,9 +59,10 @@ button, input, select, textarea {
 }
 
 /* ============================================ */
-/* SPLASH SCREEN & ANIMAÇÃO FLUIDA DO LOGO      */
+/* SPLASH SCREEN & ONDAS DE ÁGUA REALISTAS      */
 /* ============================================ */
 body.splash-active {
+    overflow: hidden;
     touch-action: none;
 }
 
@@ -71,56 +72,149 @@ body.splash-active {
     width: 100%;
     height: 100vh;
     height: 100dvh;
-    z-index: 999999;
+    background-color: var(--brand-navy-dark, #000238);
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: auto;
-    touch-action: none;
-}
-
-.splash-backdrop {
-    position: absolute;
-    inset: 0;
-    background-color: var(--brand-navy-dark, #000238);
     opacity: 1;
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity;
+    visibility: visible;
+    padding: 20px;
+    
+    --splash-x: 50%;
+    --splash-y: 50%;
+    --splash-radius: 0%;
+    
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-#splash-screen.splash-hidden .splash-backdrop {
-    opacity: 0;
+/* A máscara líquida de água é ativada SOMENTE no momento do splash */
+#splash-screen.splash-wave {
+    -webkit-mask-image: radial-gradient(
+        circle at var(--splash-x) var(--splash-y),
+        transparent var(--splash-radius),
+        rgba(0, 119, 200, 0.35) calc(var(--splash-radius) + 2%),
+        transparent calc(var(--splash-radius) + 6%),
+        black calc(var(--splash-radius) + 12%)
+    );
+    mask-image: radial-gradient(
+        circle at var(--splash-x) var(--splash-y),
+        transparent var(--splash-radius),
+        rgba(0, 119, 200, 0.35) calc(var(--splash-radius) + 2%),
+        transparent calc(var(--splash-radius) + 6%),
+        black calc(var(--splash-radius) + 12%)
+    );
+    will-change: -webkit-mask-image, mask-image;
 }
 
 #splash-screen.splash-hidden {
+    opacity: 0;
+    visibility: hidden;
     pointer-events: none;
 }
 
-.splash-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 900px;
-    padding: 20px;
-}
-
 #splash-logo {
-    margin-bottom: 0;
-    transform-origin: 0 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
     will-change: transform;
-    opacity: 1;
+    pointer-events: none;
 }
 
 #splash-logo.animating {
-    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-#target-logo.target-hidden {
-    opacity: 0 !important;
-    visibility: hidden !important;
+/* Container e Animações das Ondas de Água Concêntricas Realistas */
+.water-waves-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99998;
+    overflow: hidden;
+}
+
+.water-wave {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 48% 52% 50% 50% / 51% 49% 51% 49%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.water-wave.wave-1 {
+    border: 2px solid rgba(0, 119, 200, 0.75);
+    box-shadow: 0 0 20px rgba(0, 119, 200, 0.4), inset 0 0 15px rgba(0, 119, 200, 0.3);
+}
+
+.water-wave.wave-2 {
+    border: 2px solid rgba(0, 92, 158, 0.65);
+    box-shadow: 0 0 25px rgba(0, 92, 158, 0.3), inset 0 0 15px rgba(0, 92, 158, 0.2);
+}
+
+.water-wave.wave-3 {
+    border: 2px solid rgba(0, 42, 102, 0.55);
+    box-shadow: 0 0 30px rgba(0, 42, 102, 0.25);
+}
+
+.water-waves-container.active .wave-1 {
+    animation: ripplePropagate1 2.6s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+.water-waves-container.active .wave-2 {
+    animation: ripplePropagate2 2.6s cubic-bezier(0.1, 0.8, 0.2, 1) 0.3s forwards;
+}
+
+.water-waves-container.active .wave-3 {
+    animation: ripplePropagate3 2.6s cubic-bezier(0.1, 0.8, 0.2, 1) 0.6s forwards;
+}
+
+@keyframes ripplePropagate1 {
+    0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 0.95;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(90) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+@keyframes ripplePropagate2 {
+    0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 0.85;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(80) rotate(-30deg);
+        opacity: 0;
+    }
+}
+
+@keyframes ripplePropagate3 {
+    0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 0.75;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(70) rotate(20deg);
+        opacity: 0;
+    }
 }
 
 /* ============================================ */

@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let isDismissed = false;
 
-        // Oculta o logo original do cabeçalho inicialmente para evitar duplicação visual
-        targetLogo.classList.add('target-hidden');
-
         function preventScroll(e) {
             if (!isDismissed) {
                 e.preventDefault();
@@ -36,11 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.removeEventListener('touchmove', preventScroll);
             } catch (err) {}
 
-            // Verifica preferência de movimento reduzido (acessibilidade)
             const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             if (prefersReducedMotion) {
-                targetLogo.classList.remove('target-hidden');
                 splashScreen.classList.add('splash-hidden');
                 document.body.classList.remove('splash-active');
                 setTimeout(() => { splashScreen.style.display = 'none'; }, 800);
@@ -48,62 +43,99 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // FLIP Animation:
-            // 1. Obter coordenadas e dimensões atuais
+            // Obter posições atuais do splashLogo (centro) e targetLogo (cabeçalho)
             const splashRect = splashLogo.getBoundingClientRect();
             const targetRect = targetLogo.getBoundingClientRect();
 
-            // Evita cálculos inválidos se os elementos não tiverem dimensão renderizada
             if (!splashRect || !targetRect || splashRect.width === 0 || targetRect.width === 0) {
-                targetLogo.classList.remove('target-hidden');
                 splashScreen.classList.add('splash-hidden');
                 document.body.classList.remove('splash-active');
                 setTimeout(() => { splashScreen.style.display = 'none'; }, 800);
                 return;
             }
 
-            // 2. Calcular deltas da quina superior esquerda (top-left origin) e escala milimétrica
             const deltaX = targetRect.left - splashRect.left;
             const deltaY = targetRect.top - splashRect.top;
+            const scale = targetRect.width / splashRect.width;
 
-            const scaleX = targetRect.width / splashRect.width;
-            const scaleY = targetRect.height / splashRect.height;
-
-            // 3. Ativar transição e aplicar a transformação FLIP com origem em 0 0
-            splashLogo.style.transformOrigin = '0 0';
+            // FASE 1: Desliza o logo da splash do centro para a posição de descanso (0.6s)
             splashLogo.classList.add('animating');
-            splashLogo.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scaleX}, ${scaleY})`;
+            splashLogo.style.transform = `translate(-50%, -50%) translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scale})`;
 
-            // 4. Iniciar o fade out do fundo azul em paralelo
-            splashScreen.classList.add('splash-hidden');
-
-            // 5. Revela o logo de destino instantaneamente por baixo antes de desmontar o splash
+            // FASE 2: Quando o logo se acomoda no cabeçalho (480ms), dispara a propagação de Ondas de Água Concêntricas!
             setTimeout(() => {
-                targetLogo.classList.remove('target-hidden');
-            }, 760);
+                const logoRect = splashLogo.getBoundingClientRect();
+                const splashX = logoRect.left + logoRect.width / 2;
+                const splashY = logoRect.top + logoRect.height / 2;
 
-            setTimeout(() => {
-                document.body.classList.remove('splash-active');
-                splashScreen.style.display = 'none';
-            }, 800);
+                splashScreen.style.setProperty('--splash-x', splashX + 'px');
+                splashScreen.style.setProperty('--splash-y', splashY + 'px');
+                splashScreen.style.setProperty('--splash-radius', '0%');
+                splashScreen.classList.add('splash-wave');
+
+                const wavesContainer = document.getElementById('water-waves-container');
+                if (wavesContainer) {
+                    const waves = wavesContainer.querySelectorAll('.water-wave');
+                    waves.forEach(w => {
+                        w.style.left = splashX + 'px';
+                        w.style.top = splashY + 'px';
+                    });
+                    wavesContainer.classList.add('active');
+                }
+
+                // Animação rAF de propagação líquida realista (2.6s para uma ondulação suave, serena e majestosa)
+                const splashDuration = 2600; // ms
+                const splashStartTime = performance.now();
+
+                function animateSplash(currentTime) {
+                    const elapsed = currentTime - splashStartTime;
+                    const progress = Math.min(1, elapsed / splashDuration);
+                    
+                    // Curva fluida de ondulação de água (easeOutCubic)
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    const currentRadius = easeProgress * 170;
+
+                    splashScreen.style.setProperty('--splash-radius', currentRadius + '%');
+
+                    if (progress < 1) {
+                        requestAnimationFrame(animateSplash);
+                    } else {
+                        splashScreen.classList.add('splash-hidden');
+                        setTimeout(() => {
+                            document.body.classList.remove('splash-active');
+                            splashScreen.style.display = 'none';
+                        }, 200);
+                    }
+                }
+
+                requestAnimationFrame(animateSplash);
+            }, 480);
         }
 
-        // Timeout máximo de segurança (2.5s) em conexões lentas
+        const MIN_DISPLAY_TIME = 600;
+        const startTime = Date.now();
         const MAX_SAFETY_TIMEOUT = 2500;
-        const safetyTimer = setTimeout(dismissSplash, MAX_SAFETY_TIMEOUT);
 
-        function checkReadyAndDismiss() {
-            if (!heroVideo || heroVideo.readyState >= 2) {
-                clearTimeout(safetyTimer);
+        function scheduleDismiss() {
+            clearTimeout(safetyTimer);
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, MIN_DISPLAY_TIME - elapsed);
+            setTimeout(() => {
                 requestAnimationFrame(() => {
                     requestAnimationFrame(dismissSplash);
                 });
+            }, remaining);
+        }
+
+        const safetyTimer = setTimeout(scheduleDismiss, MAX_SAFETY_TIMEOUT);
+
+        function checkReadyAndDismiss() {
+            if (!heroVideo || heroVideo.readyState >= 2) {
+                scheduleDismiss();
             } else {
                 heroVideo.addEventListener('loadeddata', function onLoadedData() {
                     heroVideo.removeEventListener('loadeddata', onLoadedData);
-                    clearTimeout(safetyTimer);
-                    requestAnimationFrame(() => {
-                        requestAnimationFrame(dismissSplash);
-                    });
+                    scheduleDismiss();
                 }, { once: true });
             }
         }

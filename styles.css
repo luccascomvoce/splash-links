@@ -760,9 +760,6 @@ footer a:hover {
     .products-header .section-title {
         font-size: 1.8rem;
     }
-    .products-header .section-subtitle {
-        font-size: 1.15rem;
-    }
     .content-section h3 {
         font-size: 1.6rem;
     }
@@ -1382,9 +1379,6 @@ footer a:hover {
 @media (max-width: 640px) {
     .products-section {
         padding: 50px 10px;
-    }
-    .products-header .section-title {
-        font-size: 1.5rem;
     }
     .products-mosaic {
         grid-template-columns: repeat(2, 1fr);

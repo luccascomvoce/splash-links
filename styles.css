@@ -781,8 +781,9 @@ footer a:hover {
 /* ============================================ */
 .products-section {
     position: relative;
-    padding: 70px 20px;
+    padding: 80px 20px;
     width: 100%;
+    min-height: 700px;
     background-color: var(--brand-navy-dark);
     background-image: linear-gradient(180deg, rgba(0, 10, 42, 0.85) 0%, rgba(0, 24, 75, 0.72) 50%, rgba(0, 10, 42, 0.88) 100%), 
                       url('./images/fundo-piscina.png');
@@ -791,6 +792,7 @@ footer a:hover {
     background-repeat: no-repeat;
     color: var(--text-white);
     overflow: hidden;
+    transition: min-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Otimização de Orientação da Imagem de Fundo (Vertical / Portrait vs Horizontal / Landscape) */
@@ -821,7 +823,7 @@ footer a:hover {
     z-index: 1;
 }
 
-/* Vinheta de Escurecimento Cinematográfica (Mesma estratégia da primeira parte do site) */
+/* Vinheta de Escurecimento Ampla e Cinematográfica (Suavização Gradual Idêntica ao Topo do Site) */
 .products-section::after {
     content: '';
     position: absolute;
@@ -830,11 +832,14 @@ footer a:hover {
     width: 100%;
     height: 100%;
     background: linear-gradient(to bottom, 
-        rgba(0, 1, 28, 0.95) 0%, 
-        rgba(0, 16, 66, 0.35) 25%, 
-        rgba(0, 16, 66, 0.35) 75%, 
-        rgba(0, 2, 56, 0.95) 100%
-    ), radial-gradient(ellipse at center, transparent 35%, rgba(0, 1, 28, 0.82) 100%);
+        rgba(0, 1, 28, 0.96) 0%, 
+        rgba(0, 4, 32, 0.82) 18%, 
+        rgba(0, 12, 52, 0.48) 38%, 
+        rgba(0, 16, 66, 0.22) 50%, 
+        rgba(0, 12, 52, 0.48) 62%, 
+        rgba(0, 4, 32, 0.82) 82%, 
+        rgba(0, 1, 28, 0.96) 100%
+    ), radial-gradient(ellipse at center, transparent 30%, rgba(0, 1, 28, 0.78) 100%);
     pointer-events: none;
     z-index: 2;
 }
@@ -961,6 +966,7 @@ footer a:hover {
 /* Grid do Mosaico Dinâmico 100% Width com Quadrados Menores */
 .products-mosaic {
     width: 100%;
+    min-height: 320px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     grid-auto-rows: 160px;
@@ -968,6 +974,7 @@ footer a:hover {
     gap: 12px;
     margin-top: 30px;
     perspective: 1000px;
+    transition: opacity 0.25s ease;
 }
 
 /* Cards do Mosaico */

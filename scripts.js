@@ -998,15 +998,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Filtragem por Categorias
+    // Filtragem por Categorias com transição suave de fade
     if (categoryFilters) {
         const filterBtns = categoryFilters.querySelectorAll('.category-btn');
         filterBtns.forEach(btn => {
             btn.addEventListener('click', function() {
+                if (this.classList.contains('active')) return;
                 filterBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 const cat = this.getAttribute('data-category');
-                renderMosaic(cat);
+
+                if (mosaicGrid) {
+                    mosaicGrid.style.opacity = '0';
+                    setTimeout(() => {
+                        renderMosaic(cat);
+                        mosaicGrid.style.opacity = '1';
+                    }, 150);
+                } else {
+                    renderMosaic(cat);
+                }
             });
         });
     }

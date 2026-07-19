@@ -490,4 +490,175 @@ document.addEventListener('DOMContentLoaded', function() {
             observer.observe(section1);
         }
     }
+
+    // ============================================ //
+    // SEÇÃO MOSAICO DINÂMICO DE PRODUTOS           //
+    // ============================================ //
+    const mosaicGrid = document.getElementById('products-mosaic-grid');
+    const categoryFilters = document.getElementById('products-category-filters');
+    const productModal = document.getElementById('product-detail-modal');
+    const modalBackdrop = document.getElementById('product-modal-backdrop');
+    const modalCloseBtn = document.getElementById('product-modal-close');
+
+    // Elementos do Modal
+    const modalImage = document.getElementById('modal-product-image');
+    const modalBadge = document.getElementById('modal-product-badge');
+    const modalTitle = document.getElementById('modal-product-title');
+    const modalCategory = document.getElementById('modal-product-category');
+    const modalDescription = document.getElementById('modal-product-description');
+    const modalZapBtn = document.getElementById('modal-product-zap-btn');
+    const modalOfficialLink = document.getElementById('modal-product-official-link');
+
+    let allProductsData = [];
+
+    // Gerador Dinâmico de Link WhatsApp para cada produto específico
+    function getProductWhatsappUrl(productTitle) {
+        const phone = "5519989064820";
+        const message = `Olá! Vim pelo site e gostaria de solicitar um orçamento para o produto: ${productTitle}`;
+        return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    }
+
+    // Carregar dados de products.json
+    if (mosaicGrid) {
+        fetch('products.json')
+            .then(res => res.json())
+            .then(products => {
+                allProductsData = products;
+                renderMosaic('all');
+            })
+            .catch(err => {
+                console.warn('Erro ao carregar products.json, tentando fallback:', err);
+            });
+    }
+
+    function renderMosaic(filterCategory) {
+        if (!mosaicGrid) return;
+
+        let filtered = allProductsData;
+        if (filterCategory === 'Destaques') {
+            filtered = allProductsData.filter(p => p.is_destaque);
+        } else if (filterCategory !== 'all') {
+            filtered = allProductsData.filter(p => 
+                p.categories && p.categories.includes(filterCategory)
+            );
+        }
+
+        if (filtered.length === 0) {
+            mosaicGrid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: rgba(255,255,255,0.7);">
+                    <p>Nenhum produto encontrado nesta categoria no momento.</p>
+                </div>
+            `;
+            return;
+        }
+
+        mosaicGrid.innerHTML = filtered.map(product => {
+            const sizeClass = product.size ? `size-${product.size}` : 'size-small';
+            const isHighlight = product.is_destaque;
+            const categoryLabel = (product.categories && product.categories.length > 0) ? product.categories[0] : 'Splash Piscinas';
+            const defaultImg = 'https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp';
+            const imgSrc = product.image || defaultImg;
+            const zapUrl = getProductWhatsappUrl(product.title);
+
+            return `
+                <div class="product-card ${sizeClass}" data-id="${product.id}" tabindex="0" role="button" aria-label="${product.title}">
+                    <div class="product-card-img-wrapper">
+                        <img class="product-card-img" src="${imgSrc}" alt="${product.title}" loading="lazy">
+                    </div>
+                    <div class="product-card-overlay"></div>
+                    ${isHighlight ? `<span class="product-badge-tag highlight"><i class="fa fa-star"></i> Destaque</span>` : ''}
+                    <div class="product-card-content">
+                        <span class="product-card-cat">${categoryLabel}</span>
+                        <h3 class="product-card-title">${product.title}</h3>
+                        <a href="${zapUrl}" target="_blank" rel="noopener noreferrer" class="product-card-btn zap-product-btn" onclick="event.stopPropagation();">
+                            <span class="fab fa-whatsapp"></span> Orçamento
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Adicionar eventos de clique nos cards para abrir o modal de detalhes
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const prodId = this.getAttribute('data-id');
+                const product = allProductsData.find(p => p.id === prodId);
+                if (product) {
+                    openProductModal(product);
+                }
+            });
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+    }
+
+    // Filtragem por Categorias
+    if (categoryFilters) {
+        const filterBtns = categoryFilters.querySelectorAll('.category-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const cat = this.getAttribute('data-category');
+                renderMosaic(cat);
+            });
+        });
+    }
+
+    // Abertura do Modal de Detalhes do Produto
+    function openProductModal(product) {
+        if (!productModal) return;
+
+        const zapUrl = getProductWhatsappUrl(product.title);
+        const categoryLabel = (product.categories && product.categories.length > 0) ? product.categories.join(' • ') : 'Acessórios Splash';
+
+        if (modalImage) {
+            modalImage.src = product.image || 'https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp';
+            modalImage.alt = product.title;
+        }
+
+        if (modalTitle) modalTitle.textContent = product.title;
+        if (modalCategory) modalCategory.textContent = categoryLabel;
+
+        if (modalBadge) {
+            if (product.is_destaque) {
+                modalBadge.style.display = 'inline-block';
+                modalBadge.textContent = '★ Destaque Splash';
+            } else {
+                modalBadge.style.display = 'none';
+            }
+        }
+
+        if (modalZapBtn) {
+            modalZapBtn.href = zapUrl;
+        }
+
+        if (modalOfficialLink) {
+            modalOfficialLink.href = product.url || 'https://www.splashpiscinas.com';
+        }
+
+        productModal.classList.add('open');
+        productModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal() {
+        if (!productModal) return;
+        productModal.classList.remove('open');
+        productModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
+    if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeProductModal);
+    if (modalBackdrop) modalBackdrop.addEventListener('click', closeProductModal);
+
+    window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && productModal && productModal.classList.contains('open')) {
+            closeProductModal();
+        }
+    });
 });

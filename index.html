@@ -407,13 +407,72 @@
             </div>
         </section>
 
-        <section class="parallax-section" id="section3">
-            <div class="parallax-content">
-                <p class="highlight-text">Momentos inesquecíveis começam com um mergulho - descubra o prazer de ter uma
-                    <span class="cor-splash">Splash</span> em casa.
-                </p>
+        <section class="products-section" id="section-outros-produtos">
+            <div class="products-container">
+                <div class="products-header">
+                    <h2 class="section-title">OUTROS PRODUTOS DOS QUAIS VOCÊ PRECISA</h2>
+                    <p class="section-subtitle">Acessórios e equipamentos de alta tecnologia para manter sua piscina perfeita, aquecida e sempre limpa.</p>
+                    
+                    <div class="products-categories" id="products-category-filters">
+                        <button class="category-btn active" data-category="all">Todos</button>
+                        <button class="category-btn" data-category="Destaques"><span class="fa fa-star"></span> Destaques</button>
+                        <button class="category-btn" data-category="Aquecimento"><span class="fa fa-fire"></span> Aquecimento</button>
+                        <button class="category-btn" data-category="Tratamento"><span class="fa fa-flask"></span> Tratamento</button>
+                        <button class="category-btn" data-category="Acessórios"><span class="fa fa-tools"></span> Acessórios</button>
+                        <button class="category-btn" data-category="Cascatas"><span class="fa fa-water"></span> Cascatas</button>
+                    </div>
+                </div>
+
+                <!-- Dynamic Mosaic Container -->
+                <div class="products-mosaic" id="products-mosaic-grid">
+                    <!-- Dynamic product tiles rendered via scripts.js -->
+                    <div class="mosaic-skeleton-loader">
+                        <div class="skeleton-card large"></div>
+                        <div class="skeleton-card large"></div>
+                        <div class="skeleton-card medium"></div>
+                        <div class="skeleton-card small"></div>
+                        <div class="skeleton-card small"></div>
+                        <div class="skeleton-card small"></div>
+                    </div>
+                </div>
+
+                <div class="products-footer">
+                    <p>Não encontrou o que procura? Fale diretamente com nossos consultores de vendas!</p>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="whatsapp-button zap-comercial main-catalog-btn">
+                        <span class="fab fa-whatsapp"></span> Consultar Catálogo Completo no WhatsApp
+                    </a>
+                </div>
             </div>
         </section>
+
+        <!-- Product Details Modal -->
+        <div class="product-modal" id="product-detail-modal" aria-hidden="true" role="dialog">
+            <div class="product-modal-backdrop" id="product-modal-backdrop"></div>
+            <div class="product-modal-content">
+                <button class="product-modal-close" id="product-modal-close" aria-label="Fechar">&times;</button>
+                <div class="product-modal-body">
+                    <div class="product-modal-image-wrapper">
+                        <img id="modal-product-image" src="" alt="" loading="lazy">
+                        <span class="product-badge" id="modal-product-badge">Destaque</span>
+                    </div>
+                    <div class="product-modal-info">
+                        <h3 id="modal-product-title">Nome do Produto</h3>
+                        <p class="product-category-tag" id="modal-product-category">Categoria</p>
+                        <p class="product-description" id="modal-product-description">
+                            Equipamento original Splash Piscinas projetado para oferecer a melhor performance, durabilidade e praticidade para sua área de lazer.
+                        </p>
+                        <div class="product-modal-actions">
+                            <a id="modal-product-zap-btn" href="#" target="_blank" rel="noopener noreferrer" class="whatsapp-button modal-zap-btn">
+                                <span class="fab fa-whatsapp"></span> Solicitar Orçamento no WhatsApp
+                            </a>
+                            <a id="modal-product-official-link" href="#" target="_blank" rel="noopener noreferrer" class="official-link-btn">
+                                Ver no site oficial <span class="fa fa-external-link-alt"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <section class="content-section" id="visit-section">
             <div class="visit-content-wrapper">

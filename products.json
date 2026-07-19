@@ -1,0 +1,827 @@
+[
+  {
+    "id": "trocador-de-calor-destaque",
+    "title": "Thermas Kelvin Splash",
+    "url": "https://www.splashpiscinas.com/produto/trocador-de-calor-destaque",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp",
+    "categories": [
+      "Destaques"
+    ],
+    "is_destaque": true,
+    "size": "large"
+  },
+  {
+    "id": "thermas-kelvin-inverter-destaque",
+    "title": "Thermas Kelvin Inverter",
+    "url": "https://www.splashpiscinas.com/produto/thermas-kelvin-inverter-destaque",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/aquecimento/thermas-kelvin-wifi-1.webp",
+    "categories": [
+      "Destaques"
+    ],
+    "is_destaque": true,
+    "size": "large"
+  },
+  {
+    "id": "clorador-destaque",
+    "title": "Clorador",
+    "url": "https://www.splashpiscinas.com/produto/clorador-destaque",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/clorador.webp",
+    "categories": [
+      "Destaques"
+    ],
+    "is_destaque": true,
+    "size": "large"
+  },
+  {
+    "id": "aspirador-splash",
+    "title": "Aspirador",
+    "url": "https://www.splashpiscinas.com/produto/aspirador-splash",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/aspirador-splash-piscinas.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "adaptador-pre-filtro",
+    "title": "Adaptador com Pré-Filtro",
+    "url": "https://www.splashpiscinas.com/produto/adaptador-pre-filtro",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/adaptador-com-prefiltro.webp",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "aspirador-automatico-papaterra",
+    "title": "Aspirador Automático Papaterra",
+    "url": "https://www.splashpiscinas.com/produto/aspirador-automatico-papaterra",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/aspirador_automatico_papaterra01.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "medium"
+  },
+  {
+    "id": "cabo-aluminio",
+    "title": "Cabo de Alumínio",
+    "url": "https://www.splashpiscinas.com/produto/cabo-aluminio",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/cabo-telescopico-splash.png",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "capa-protecao",
+    "title": "Capa de Proteção",
+    "url": "https://www.splashpiscinas.com/produto/capa-protecao",
+    "image": "https://cdn.splashpiscinas.com/assets/img/capa_max01.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "medium"
+  },
+  {
+    "id": "catador",
+    "title": "Catador",
+    "url": "https://www.splashpiscinas.com/produto/catador",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/Catador.webp",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cerco-max",
+    "title": "Cerco Max",
+    "url": "https://www.splashpiscinas.com/produto/cerco-max",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/seguranca_max/cerco_max/foto/cerco_max07.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "clorador",
+    "title": "Clorador",
+    "url": "https://www.splashpiscinas.com/produto/clorador",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/clorador.webp",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "corrimao",
+    "title": "Corrimão Max",
+    "url": "https://www.splashpiscinas.com/produto/corrimao",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/corrimao_cores.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "colete-max",
+    "title": "Colete Max",
+    "url": "https://www.splashpiscinas.com/produto/colete-max",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/seguranca_max/colete_max/colete_max_05.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "escova",
+    "title": "Escova",
+    "url": "https://www.splashpiscinas.com/produto/escova",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/comodidade_pratic/escova/escova_pastilhas01.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "filtro-pratic",
+    "title": "Filtro Pratic",
+    "url": "https://www.splashpiscinas.com/produto/filtro-pratic",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/filtro_pratic01.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "medium"
+  },
+  {
+    "id": "forracao-pratic",
+    "title": "Forração Pratic Light",
+    "url": "https://www.splashpiscinas.com/produto/forracao-pratic",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/forracao_pratic_light01.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "igui-stone",
+    "title": "iGUi Stone",
+    "url": "https://www.splashpiscinas.com/produto/igui-stone",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/image-iGUi-Stone.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "medium"
+  },
+  {
+    "id": "flutuador-splash",
+    "title": "Oxi Flutuador iGUi",
+    "url": "https://www.splashpiscinas.com/produto/flutuador-splash",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/Oxi-Flutuador-iGUi.webp",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "mangueira",
+    "title": "Mangueira",
+    "url": "https://www.splashpiscinas.com/produto/mangueira",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/mangueira-splash.png",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "quadro-de-comando",
+    "title": "QC Splash",
+    "url": "https://www.splashpiscinas.com/produto/quadro-de-comando",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/quadro-comando-Splash.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "super-side",
+    "title": "Super Side",
+    "url": "https://www.splashpiscinas.com/produto/super-side",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/super-side-splash.png",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "to-keep",
+    "title": "To Keep",
+    "url": "https://www.splashpiscinas.com/produto/to-keep",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/comodidade_pratic/tokeep/tokeep-suporte-para-mangueira-cabo-telescopio-aspirador-1.jpg",
+    "categories": [
+      "Acessórios"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "trocador-de-calor",
+    "title": "Thermas Kelvin Splash",
+    "url": "https://www.splashpiscinas.com/produto/trocador-de-calor",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp",
+    "categories": [
+      "Aquecimento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "thermas-kelvin-inverter",
+    "title": "Thermas Kelvin Inverter",
+    "url": "https://www.splashpiscinas.com/produto/thermas-kelvin-inverter",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/aquecimento/thermas-kelvin-wifi-1.webp",
+    "categories": [
+      "Aquecimento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "ducha-solar",
+    "title": "Ducha Solar",
+    "url": "https://www.splashpiscinas.com/produto/ducha-solar",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/ducha_solar_kelvin01.webp",
+    "categories": [
+      "Aquecimento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "capa-termica",
+    "title": "Capa Térmica",
+    "url": "https://www.splashpiscinas.com/produto/capa-termica",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/capa-termica-splash.jpg",
+    "categories": [
+      "Aquecimento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cascata-flipper",
+    "title": "Cascata Flipper",
+    "url": "https://www.splashpiscinas.com/produto/cascata-flipper",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/cascata/cascata_flipper/cascata_flipper01.jpg",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cascata-fred",
+    "title": "Cascata Fred",
+    "url": "https://www.splashpiscinas.com/produto/cascata-fred",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/cascata/cascata_fred/cascata_fred09.jpg",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cascata-onda",
+    "title": "Cascata Onda",
+    "url": "https://www.splashpiscinas.com/produto/cascata-onda",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/cascata/cascata_onda/cascata_onda01.jpg",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cascata-penelope",
+    "title": "Cascata Penelope",
+    "url": "https://www.splashpiscinas.com/produto/cascata-penelope",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/cascata/cascata_penelope/cascata_penelope01.jpg",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cascata-personalizada",
+    "title": "Cascata Personalizada",
+    "url": "https://www.splashpiscinas.com/produto/cascata-personalizada",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/cascata/cascata_personalizada/cascata_personalizada01.jpg",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cascata-plus",
+    "title": "Cascata Plus",
+    "url": "https://www.splashpiscinas.com/produto/cascata-plus",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/not25-02-26-06-01.jpg",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cascata-rupert",
+    "title": "Cascata Rupert",
+    "url": "https://www.splashpiscinas.com/produto/cascata-rupert",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/cascata/cascata_rupert/cascata-rupert04.jpg",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "hidrojato-escoces",
+    "title": "Hidrojato Escocês",
+    "url": "https://www.splashpiscinas.com/produto/hidrojato-escoces",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/cascata/hidrojato_escoces/NOVO-HIDROJATO_01.webp",
+    "categories": [
+      "Cascatas"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "boia-braco",
+    "title": "Bóia de Braço",
+    "url": "https://www.splashpiscinas.com/produto/boia-braco",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/diversao/boia/boia-braço-peixinho.webp",
+    "categories": [
+      "Diversão"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "boia-donut",
+    "title": "Boia Donut",
+    "url": "https://www.splashpiscinas.com/produto/boia-donut",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/diversao/boia/boia-donut-01.webp",
+    "categories": [
+      "Diversão"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "boia-unicornio",
+    "title": "Boia Unicornio",
+    "url": "https://www.splashpiscinas.com/produto/boia-unicornio",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/diversao/boia/boia-unicornio-02.webp",
+    "categories": [
+      "Diversão"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "espaguete-GG",
+    "title": "Espaguete do GG",
+    "url": "https://www.splashpiscinas.com/produto/espaguete-GG",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/diversao/espaguete/foto/espaguete02.jpg",
+    "categories": [
+      "Diversão"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "boia-splash",
+    "title": "Boia Splash",
+    "url": "https://www.splashpiscinas.com/produto/boia-splash",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/diversao/boia/boia-splash-01.webp",
+    "categories": [
+      "Diversão"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "raia",
+    "title": "Raia - Pratique natação",
+    "url": "https://www.splashpiscinas.com/produto/raia",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/esporte/raia_natacao/foto/raia_natacao-01.webp",
+    "categories": [
+      "Esportes"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "dry-pump-2-splash",
+    "title": "Dry Pump 2 Splash",
+    "url": "https://www.splashpiscinas.com/produto/dry-pump-2-splash",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/dry-pump-2/splash_drypump2_design.webp",
+    "categories": [
+      "Filtros"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "dry-pump-2-plus-splash",
+    "title": "Dry Pump 2 Plus Splash",
+    "url": "https://www.splashpiscinas.com/produto/dry-pump-2-plus-splash",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/dry-pump-2/splash_drypump2_design.webp",
+    "categories": [
+      "Filtros"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "dry-pump-splash",
+    "title": "Dry Pump Splash",
+    "url": "https://www.splashpiscinas.com/produto/dry-pump-splash",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/Dry-Pump-Splash-01.webp",
+    "categories": [
+      "Filtros"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "qc-igui-connect",
+    "title": "QC iGUi Connect",
+    "url": "https://www.splashpiscinas.com/produto/qc-igui-connect",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/qc-connect/qc-igui-connect-thumb.webp",
+    "categories": [
+      "Filtros"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "dry-pump-splash-plus",
+    "title": "Dry Pump Splash Plus",
+    "url": "https://www.splashpiscinas.com/produto/dry-pump-splash-plus",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/Dry-Pump-Plus-Splash-01a.webp",
+    "categories": [
+      "Filtros"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "iluminacao-abajur",
+    "title": "iGUiLux Abajur",
+    "url": "https://www.splashpiscinas.com/produto/iluminacao-abajur",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/igui_lux_abajur09.jpg",
+    "categories": [
+      "Iluminação"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "iluminacao-azul",
+    "title": "iGUiLux Azul / Branca",
+    "url": "https://www.splashpiscinas.com/produto/iluminacao-azul",
+    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/iGUiLux-Power-led-azul-01.jpg",
+    "categories": [
+      "Iluminação"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "iluminacao-float",
+    "title": "iGUiLux Float",
+    "url": "https://www.splashpiscinas.com/produto/iluminacao-float",
+    "image": "https://cdn.splashpiscinas.com/assets/img/abilight-float.jpg",
+    "categories": [
+      "Iluminação"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "iluminacao-jetwhite",
+    "title": "iGUiLux Jet White",
+    "url": "https://www.splashpiscinas.com/produto/iluminacao-jetwhite",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/iluminacao/igui_lux_jetwhite/jetwhite_01.jpg",
+    "categories": [
+      "Iluminação"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "moveis-design",
+    "title": "Conjunto Design",
+    "url": "https://www.splashpiscinas.com/produto/moveis-design",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/conjunto_design/foto/conjunto_design11.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "moveis-arena",
+    "title": "Conjunto Arena",
+    "url": "https://www.splashpiscinas.com/produto/moveis-arena",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/conjunto_arena/conjunto_arena09.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "moveis-gris",
+    "title": "Conjunto Gris",
+    "url": "https://www.splashpiscinas.com/produto/moveis-gris",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/conjunto_gris/conjunto_gris01.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "espreguicadeira-gris",
+    "title": "Espreguiçadeira Gris",
+    "url": "https://www.splashpiscinas.com/produto/espreguicadeira-gris",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/espreguicaderira_gris/foto/espreguicaderira_gris03.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "espreguicadeira-arena",
+    "title": "Espreguiçadeira Arena",
+    "url": "https://www.splashpiscinas.com/produto/espreguicadeira-arena",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/espreguicaderira_arena/foto/espreguicaderira_arena04.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "ombrelone-fixo",
+    "title": "Ombrelone Fixo",
+    "url": "https://www.splashpiscinas.com/produto/ombrelone-fixo",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/ombrelone_fixo/foto/ombrelone_sombreiro-cores.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "ombrelone-copa",
+    "title": "Ombrelone Copa",
+    "url": "https://www.splashpiscinas.com/produto/ombrelone-copa",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/ombrelone_copa/foto/ombrelone-copa-bege.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "base-eden",
+    "title": "Base Éden",
+    "url": "https://www.splashpiscinas.com/produto/base-eden",
+    "image": "https://cdn.splashpiscinas.com/assets/produto/moveis/base_eden/foto/base_eden03.jpg",
+    "categories": [
+      "Móveis"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "algicida",
+    "title": "Algicida",
+    "url": "https://www.splashpiscinas.com/produto/algicida",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-algicida.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "algicida-plus",
+    "title": "Algicida Plus",
+    "url": "https://www.splashpiscinas.com/produto/algicida-plus",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-algicida-plus.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "oxi-brilhp",
+    "title": "Oxi Brilho",
+    "url": "https://www.splashpiscinas.com/produto/oxi-brilhp",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-brilho.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "barrilha-leve",
+    "title": "Barrilha Leve",
+    "url": "https://www.splashpiscinas.com/produto/barrilha-leve",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-barrilha-leve.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cloro-plus",
+    "title": "Cloro Plus",
+    "url": "https://www.splashpiscinas.com/produto/cloro-plus",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/cloro-plus.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "decantador",
+    "title": "Decantador",
+    "url": "https://www.splashpiscinas.com/produto/decantador",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-decantador.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "elevador-alcalinidade",
+    "title": "Elevador de Alcalinidade",
+    "url": "https://www.splashpiscinas.com/produto/elevador-alcalinidade",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-elevador-de-alcalinidade.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "elevador-ph",
+    "title": "Elevador de pH",
+    "url": "https://www.splashpiscinas.com/produto/elevador-ph",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-elevador-de-pH.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "cloro-multi",
+    "title": "Cloro Multiação",
+    "url": "https://www.splashpiscinas.com/produto/cloro-multi",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-cloro-multiacao-igui/igui-oxi-cloro-multiacao-1.webp",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "estojo-teste",
+    "title": "Estojo de Teste Líquido",
+    "url": "https://www.splashpiscinas.com/produto/estojo-teste",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-estojo-de-teste-liquido.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "floculante",
+    "title": "Floculante",
+    "url": "https://www.splashpiscinas.com/produto/floculante",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-floculante.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "oxi-medidor",
+    "title": "Oxi Medidor",
+    "url": "https://www.splashpiscinas.com/produto/oxi-medidor",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-medidor-novo.jpg",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "inibidor-metais",
+    "title": "Inibidor de Metais",
+    "url": "https://www.splashpiscinas.com/produto/inibidor-metais",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-inibidor-de-metais.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "limpa-bordas",
+    "title": "Limpa Bordas",
+    "url": "https://www.splashpiscinas.com/produto/limpa-bordas",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-limpa-facil-bordas/igui-oxi-limpa-facil-bordas-1.webp",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "estojo-alcalinidade-total",
+    "title": "Oxi Estojo de Alc Total",
+    "url": "https://www.splashpiscinas.com/produto/estojo-alcalinidade-total",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-estojo-de-teste-alcalinidade-total.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "redutor-alcalinidade-ph",
+    "title": "Redutor de pH e Alcalinidade",
+    "url": "https://www.splashpiscinas.com/produto/redutor-alcalinidade-ph",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-redutor-de-pH-e-alcalinidade.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "splash-solo",
+    "title": "Solo",
+    "url": "https://www.splashpiscinas.com/produto/splash-solo",
+    "image": "https://cdn.splashpiscinas.com/assets/img/solo-1-litro.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  },
+  {
+    "id": "sulfato-aluminio",
+    "title": "Sulfato de Alumínio",
+    "url": "https://www.splashpiscinas.com/produto/sulfato-aluminio",
+    "image": "https://cdn.splashpiscinas.com/assets/img/tratamento/oxi-sulfato-de-aluminio.png",
+    "categories": [
+      "Tratamento"
+    ],
+    "is_destaque": false,
+    "size": "small"
+  }
+]

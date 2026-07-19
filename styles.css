@@ -62,8 +62,7 @@ button, input, select, textarea {
 /* SPLASH SCREEN & ONDAS DE ÁGUA REALISTAS      */
 /* ============================================ */
 body.splash-active {
-    overflow: hidden;
-    touch-action: none;
+    touch-action: auto;
 }
 
 #splash-screen {
@@ -80,6 +79,7 @@ body.splash-active {
     opacity: 1;
     visibility: visible;
     padding: 20px;
+    pointer-events: none;
     
     --splash-x: 50%;
     --splash-y: 50%;

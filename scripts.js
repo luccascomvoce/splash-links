@@ -13,31 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let isDismissed = false;
 
-        function preventScroll(e) {
-            if (!isDismissed) {
-                e.preventDefault();
-            }
-        }
-
-        try {
-            window.addEventListener('wheel', preventScroll, { passive: false });
-            window.addEventListener('touchmove', preventScroll, { passive: false });
-        } catch (err) {}
-
         function dismissSplash() {
             if (isDismissed) return;
             isDismissed = true;
 
-            try {
-                window.removeEventListener('wheel', preventScroll);
-                window.removeEventListener('touchmove', preventScroll);
-            } catch (err) {}
+            // Libera o scroll da página imediatamente
+            document.body.classList.remove('splash-active');
 
             const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             if (prefersReducedMotion) {
                 splashScreen.classList.add('splash-hidden');
-                document.body.classList.remove('splash-active');
                 setTimeout(() => { splashScreen.style.display = 'none'; }, 800);
                 return;
             }
@@ -49,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!splashRect || !targetRect || splashRect.width === 0 || targetRect.width === 0) {
                 splashScreen.classList.add('splash-hidden');
-                document.body.classList.remove('splash-active');
                 setTimeout(() => { splashScreen.style.display = 'none'; }, 800);
                 return;
             }

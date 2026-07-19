@@ -492,8 +492,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================ //
-    // SEÇÃO MOSAICO DINÂMICO DE PRODUTOS           //
+    // SEÇÃO MOSAICO DINÂMICO DE PRODUTOS & ÁGUA    //
     // ============================================ //
+    const productsSection = document.getElementById('section-outros-produtos');
     const mosaicGrid = document.getElementById('products-mosaic-grid');
     const categoryFilters = document.getElementById('products-category-filters');
     const productModal = document.getElementById('product-detail-modal');
@@ -508,6 +509,366 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalZapBtn = document.getElementById('modal-product-zap-btn');
 
     let allProductsData = [];
+
+    // ============================================ //
+    // MOTOR 1: ONDULAÇÃO DE ÁGUA NO CANVAS (LÍQUIDO) //
+    // ============================================ //
+    const WaterRippleEngine = (function() {
+        const canvas = document.getElementById('products-water-canvas');
+        if (!canvas || !productsSection) return null;
+
+        const ctx = canvas.getContext('2d');
+        const simW = 120;
+        let simH = 75;
+        let size = simW * simH;
+
+        let buffer1 = new Float32Array(size);
+        let buffer2 = new Float32Array(size);
+
+        const offCanvas = document.createElement('canvas');
+        const offCtx = offCanvas.getContext('2d');
+        let imgData = null;
+
+        let isRunning = false;
+        let animId = null;
+
+        function resize() {
+            const rect = productsSection.getBoundingClientRect();
+            const w = Math.ceil(rect.width);
+            const h = Math.ceil(rect.height);
+            if (w === 0 || h === 0) return;
+
+            canvas.width = w;
+            canvas.height = h;
+
+            simH = Math.max(30, Math.floor(simW * (h / w)));
+            size = simW * simH;
+
+            buffer1 = new Float32Array(size);
+            buffer2 = new Float32Array(size);
+
+            offCanvas.width = simW;
+            offCanvas.height = simH;
+            imgData = offCtx.createImageData(simW, simH);
+        }
+
+        function disturb(px, py, radius, strength) {
+            if (!canvas.width || !canvas.height) return;
+            const cx = (px / canvas.width) * simW;
+            const cy = (py / canvas.height) * simH;
+            // Garante raio mínimo de 3.5 células de grade para evitar artefatos de eixos verticais/horizontais
+            const r = Math.max(3.5, (radius / canvas.width) * simW);
+            const rSq = r * r;
+
+            const minX = Math.max(1, Math.floor(cx - r));
+            const maxX = Math.min(simW - 1, Math.ceil(cx + r));
+            const minY = Math.max(1, Math.floor(cy - r));
+            const maxY = Math.min(simH - 1, Math.ceil(cy + r));
+
+            for (let y = minY; y < maxY; y++) {
+                for (let x = minX; x < maxX; x++) {
+                    const dx = x - cx;
+                    const dy = y - cy;
+                    const dSq = dx * dx + dy * dy;
+                    if (dSq < rSq) {
+                        const dist = Math.sqrt(dSq);
+                        // Suavização por Cosseno (Gaussian Bell) para ondas perfeitamente circulares e orgânicas
+                        const falloff = 0.5 * (1 + Math.cos((dist / r) * Math.PI));
+                        const idx = y * simW + x;
+                        buffer1[idx] += strength * falloff;
+                    }
+                }
+            }
+        }
+
+        function updateSimulation() {
+            // Equação de Ondas 2D com amortecimento natural e fluido
+            const w = simW;
+            const h = simH;
+
+            for (let y = 1; y < h - 1; y++) {
+                let row = y * w;
+                for (let x = 1; x < w - 1; x++) {
+                    let idx = row + x;
+                    buffer2[idx] = ((
+                        buffer1[idx - 1] +
+                        buffer1[idx + 1] +
+                        buffer1[idx - w] +
+                        buffer1[idx + w]
+                    ) * 0.5) - buffer2[idx];
+
+                    buffer2[idx] *= 0.97; // Amortecimento suave e cristalino da água
+                }
+            }
+
+            // Troca de buffers
+            const temp = buffer1;
+            buffer1 = buffer2;
+            buffer2 = temp;
+        }
+
+        function render() {
+            if (!imgData) return;
+            const data = imgData.data;
+            const w = simW;
+            const h = simH;
+
+            for (let y = 1; y < h - 1; y++) {
+                let row = y * w;
+                for (let x = 1; x < w - 1; x++) {
+                    let idx = row + x;
+                    let val = buffer1[idx];
+
+                    // Variação de normais para ondas de água circulares e translúcidas
+                    let dx = buffer1[idx + 1] - buffer1[idx - 1];
+                    let dy = buffer1[idx + w] - buffer1[idx - w];
+
+                    let specular = Math.max(0, (-dx - dy) * 0.7);
+                    let intensity = Math.min(255, Math.abs(val) * 0.4 + specular * 10);
+
+                    let pixelIdx = idx * 4;
+                    // Tom azul água cristalina translúcida e suave
+                    data[pixelIdx]     = Math.min(255, 0 + intensity * 0.2);                      // R
+                    data[pixelIdx + 1] = Math.min(255, 80 + intensity * 0.4 + specular * 0.8);    // G
+                    data[pixelIdx + 2] = Math.min(255, 160 + intensity * 0.4 + specular * 1.0);   // B
+                    data[pixelIdx + 3] = Math.min(45, Math.abs(val) * 0.4 + specular * 8);        // Transparência elevada (~15-18%)
+                }
+            }
+
+            offCtx.putImageData(imgData, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Desenha suavemente com interpolação bicúbica/linear do navegador
+            ctx.drawImage(offCanvas, 0, 0, canvas.width, canvas.height);
+
+            // Micro-gotas em repouso (Garoa d'água ambiente muito discreta)
+            if (Math.random() < 0.01) {
+                disturb(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height,
+                    Math.random() * 20 + 10,
+                    Math.random() * 30 + 15
+                );
+            }
+        }
+
+        function tick() {
+            if (!isRunning) return;
+            updateSimulation();
+            render();
+            animId = requestAnimationFrame(tick);
+        }
+
+        function start() {
+            if (isRunning) return;
+            isRunning = true;
+            resize();
+            animId = requestAnimationFrame(tick);
+        }
+
+        function stop() {
+            isRunning = false;
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+
+        return {
+            start,
+            stop,
+            disturb
+        };
+    })();
+
+    // ============================================ //
+    // MOTOR 2: FÍSICA FLUTUANTE DOS CARDS DO MOSAICO //
+    // ============================================ //
+    const MosaicWaterPhysics = (function() {
+        let cardNodes = [];
+        let cardsData = [];
+
+        let mouseX = -9999;
+        let mouseY = -9999;
+        let isMouseOver = false;
+
+        let isRunning = false;
+        let animId = null;
+
+        function updateCardPositions() {
+            if (!mosaicGrid) return;
+            const gridRect = mosaicGrid.getBoundingClientRect();
+            cardNodes = Array.from(mosaicGrid.querySelectorAll('.product-card'));
+
+            cardsData = cardNodes.map((el, i) => {
+                const rect = el.getBoundingClientRect();
+                return {
+                    el: el,
+                    cx: (rect.left + rect.width / 2) - gridRect.left,
+                    cy: (rect.top + rect.height / 2) - gridRect.top,
+                    floatPhase: i * 0.85 + Math.random() * 0.5,
+                    curScale: 1.0,
+                    targetScale: 1.0,
+                    curX: 0,
+                    curY: 0,
+                    targetX: 0,
+                    targetY: 0,
+                    curRot: 0,
+                    targetRot: 0
+                };
+            });
+        }
+
+        function handlePointerMove(e) {
+            if (!productsSection || !mosaicGrid) return;
+            const secRect = productsSection.getBoundingClientRect();
+            const gridRect = mosaicGrid.getBoundingClientRect();
+
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const secX = clientX - secRect.left;
+            const secY = clientY - secRect.top;
+
+            mouseX = clientX - gridRect.left;
+            mouseY = clientY - gridRect.top;
+            isMouseOver = true;
+
+            // Perturbação circular sutil e fluida sob o cursor no canvas de água
+            if (WaterRippleEngine) {
+                WaterRippleEngine.disturb(secX, secY, 28, 45);
+            }
+        }
+
+        function handlePointerLeave() {
+            isMouseOver = false;
+            mouseX = -9999;
+            mouseY = -9999;
+        }
+
+        function tick(timestamp) {
+            if (!isRunning) return;
+
+            const time = timestamp * 0.002;
+            const swellRadius = 110;    // Raio suave no card sob o cursor
+            const displaceRadius = 200; // Raio sutil para vizinhos próximos
+
+            cardsData.forEach(card => {
+                // 1. Movimento orgânico suave de flutuação em repouso
+                const idleY = Math.sin(time + card.floatPhase) * 2.2;
+                const idleRot = Math.cos(time * 0.7 + card.floatPhase) * 0.4;
+
+                let targetScale = 1.0;
+                let targetPushX = 0;
+                let targetPushY = 0;
+
+                // 2. Interação fluida e harmoniosa com o Cursor/Toque
+                if (isMouseOver) {
+                    const dx = card.cx - mouseX;
+                    const dy = card.cy - mouseY;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < swellRadius) {
+                        // Card sob o cursor -> Elevação suave (1.05x)
+                        const factor = 1 - (dist / swellRadius);
+                        targetScale = 1.0 + (factor * 0.05); 
+                        targetPushY = -2.5;
+                        card.el.classList.add('is-active');
+                    } else if (dist < displaceRadius) {
+                        // Vizinhos próximos -> Deslocamento fluido contido (7px)
+                        const factor = 1 - ((dist - swellRadius) / (displaceRadius - swellRadius));
+                        const pushForce = factor * 7.0; 
+                        const angle = Math.atan2(dy, dx);
+
+                        targetPushX = Math.cos(angle) * pushForce;
+                        targetPushY = Math.sin(angle) * pushForce;
+                        targetScale = 1.0 - (factor * 0.02); // Leve depressão líquida (0.98x)
+                        card.el.classList.remove('is-active');
+                    } else {
+                        card.el.classList.remove('is-active');
+                    }
+                } else {
+                    card.el.classList.remove('is-active');
+                }
+
+                // 3. Física de Lerp/Spring suave e cadenciada (sem solavancos)
+                card.curScale += (targetScale - card.curScale) * 0.08;
+                card.curX += (targetPushX - card.curX) * 0.08;
+                card.curY += (targetPushY - card.curY) * 0.08;
+                card.curRot += (idleRot - card.curRot) * 0.08;
+
+                // 4. Aplica a transformação 3D acelerada por GPU
+                const totalY = card.curY + idleY;
+                card.el.style.transform = `translate3d(${card.curX.toFixed(2)}px, ${totalY.toFixed(2)}px, 0px) scale(${card.curScale.toFixed(3)}) rotate(${card.curRot.toFixed(2)}deg)`;
+            });
+
+            animId = requestAnimationFrame(tick);
+        }
+
+        function start() {
+            if (isRunning) return;
+            isRunning = true;
+            updateCardPositions();
+            animId = requestAnimationFrame(tick);
+        }
+
+        function stop() {
+            isRunning = false;
+            if (animId) {
+                cancelAnimationFrame(animId);
+                animId = null;
+            }
+        }
+
+        function init() {
+            updateCardPositions();
+        }
+
+        // Event Listeners de Pointer/Mouse/Touch
+        if (productsSection) {
+            productsSection.addEventListener('mousemove', handlePointerMove, { passive: true });
+            productsSection.addEventListener('mouseleave', handlePointerLeave);
+            productsSection.addEventListener('touchstart', handlePointerMove, { passive: true });
+            productsSection.addEventListener('touchmove', handlePointerMove, { passive: true });
+            productsSection.addEventListener('touchend', handlePointerLeave);
+        }
+
+        window.addEventListener('resize', updateCardPositions);
+
+        return {
+            init,
+            start,
+            stop
+        };
+    })();
+
+    // ============================================ //
+    // OBSERVER DE PERFORMANCE (PAUSA OFF-SCREEN)   //
+    // ============================================ //
+    if (productsSection && 'IntersectionObserver' in window) {
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (WaterRippleEngine) WaterRippleEngine.start();
+                    if (MosaicWaterPhysics) MosaicWaterPhysics.start();
+                } else {
+                    if (WaterRippleEngine) WaterRippleEngine.stop();
+                    if (MosaicWaterPhysics) MosaicWaterPhysics.stop();
+                }
+            });
+        }, { rootMargin: '200px 0px' });
+
+        sectionObserver.observe(productsSection);
+    }
 
     // Gerador Dinâmico de Link WhatsApp para cada produto específico
     function getProductWhatsappUrl(productTitle) {
@@ -586,6 +947,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+
+        // Atualizar posições no motor de física
+        if (MosaicWaterPhysics) {
+            setTimeout(() => {
+                MosaicWaterPhysics.init();
+            }, 50);
+        }
     }
 
     // Filtragem por Categorias

@@ -1,4 +1,5 @@
-![image](https://github.com/user-attachments/assets/6bc45afc-962b-411d-ae70-3e4e83304001)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/392f3eb1-ff28-4546-8bfe-1345d19ca985" />
+
 
 
 Agregador de links para uma loja da rede de franquias Splash Piscinas.

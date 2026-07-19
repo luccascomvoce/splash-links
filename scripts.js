@@ -86,6 +86,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Animação rAF de propagação líquida de gota d'água (3.2s de expansão fluida até sair da visão)
                 const splashDuration = 3200; // ms
                 const splashStartTime = performance.now();
+                const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+                if (isTouchDevice) {
+                    setTimeout(() => {
+                        splashScreen.classList.add('splash-hidden');
+                    }, 1200);
+                }
 
                 function animateSplash(currentTime) {
                     const elapsed = currentTime - splashStartTime;

@@ -859,10 +859,41 @@ button:focus-visible {
 footer {
     background-color: var(--dark-footer);
     color: var(--text-muted);
-    text-align: center;
-    padding: 40px 20px;
+    padding: 30px 20px;
     font-size: 0.9rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer-company {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-company .company-name {
+    font-weight: 600;
+    color: var(--text-white);
+    letter-spacing: 0.5px;
+}
+
+.footer-company .company-cnpj {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.footer-credits {
+    text-align: right;
 }
 
 footer a {
@@ -914,6 +945,17 @@ footer a:hover {
     }
     .visit-card, .work-card {
         padding: 30px 20px;
+    }
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    .footer-company {
+        text-align: center;
+    }
+    .footer-credits {
+        text-align: center;
     }
 }
 

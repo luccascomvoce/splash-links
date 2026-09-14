@@ -1,33 +1,34 @@
 [
   {
-    "id": "trocador-de-calor-destaque",
+    "id": "trocador-de-calor",
     "title": "Thermas Kelvin Splash",
     "url": "https://www.splashpiscinas.com/produto/trocador-de-calor-destaque",
     "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp",
     "categories": [
-      "Destaques"
+      "Aquecimento"
     ],
-    "is_destaque": true,
+    "is_destaque": false,
     "size": "large"
   },
   {
-    "id": "thermas-kelvin-inverter-destaque",
+    "id": "thermas-kelvin-inverter",
     "title": "Thermas Kelvin Inverter",
     "url": "https://www.splashpiscinas.com/produto/thermas-kelvin-inverter-destaque",
     "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/aquecimento/thermas-kelvin-wifi-1.webp",
     "categories": [
-      "Destaques"
+      "Aquecimento"
     ],
-    "is_destaque": true,
+    "is_destaque": false,
     "size": "large"
   },
   {
-    "id": "clorador-destaque",
+    "id": "clorador",
     "title": "Clorador",
     "url": "https://www.splashpiscinas.com/produto/clorador-destaque",
     "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/clorador.webp",
     "categories": [
-      "Destaques"
+      "Destaques",
+      "Acessórios"
     ],
     "is_destaque": true,
     "size": "large"
@@ -38,9 +39,10 @@
     "url": "https://www.splashpiscinas.com/produto/aspirador-splash",
     "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/aspirador-splash-piscinas.jpg",
     "categories": [
+      "Destaques",
       "Acessórios"
     ],
-    "is_destaque": false,
+    "is_destaque": true,
     "size": "small"
   },
   {
@@ -93,9 +95,10 @@
     "url": "https://www.splashpiscinas.com/produto/catador",
     "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/Catador.webp",
     "categories": [
+      "Destaques",
       "Acessórios"
     ],
-    "is_destaque": false,
+    "is_destaque": true,
     "size": "small"
   },
   {
@@ -103,17 +106,6 @@
     "title": "Cerco Max",
     "url": "https://www.splashpiscinas.com/produto/cerco-max",
     "image": "https://cdn.splashpiscinas.com/assets/produto/seguranca_max/cerco_max/foto/cerco_max07.jpg",
-    "categories": [
-      "Acessórios"
-    ],
-    "is_destaque": false,
-    "size": "small"
-  },
-  {
-    "id": "clorador",
-    "title": "Clorador",
-    "url": "https://www.splashpiscinas.com/produto/clorador",
-    "image": "https://cdn.splashpiscinas.com/assets/produto/acessorios/clorador.webp",
     "categories": [
       "Acessórios"
     ],
@@ -242,28 +234,6 @@
     "size": "small"
   },
   {
-    "id": "trocador-de-calor",
-    "title": "Thermas Kelvin Splash",
-    "url": "https://www.splashpiscinas.com/produto/trocador-de-calor",
-    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp",
-    "categories": [
-      "Aquecimento"
-    ],
-    "is_destaque": false,
-    "size": "small"
-  },
-  {
-    "id": "thermas-kelvin-inverter",
-    "title": "Thermas Kelvin Inverter",
-    "url": "https://www.splashpiscinas.com/produto/thermas-kelvin-inverter",
-    "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/aquecimento/thermas-kelvin-wifi-1.webp",
-    "categories": [
-      "Aquecimento"
-    ],
-    "is_destaque": false,
-    "size": "small"
-  },
-  {
     "id": "ducha-solar",
     "title": "Ducha Solar",
     "url": "https://www.splashpiscinas.com/produto/ducha-solar",
@@ -280,9 +250,10 @@
     "url": "https://www.splashpiscinas.com/produto/capa-termica",
     "image": "https://cdn.splashpiscinas.com/assets/img/acessorios/capa-termica-splash.jpg",
     "categories": [
+      "Destaques",
       "Aquecimento"
     ],
-    "is_destaque": false,
+    "is_destaque": true,
     "size": "small"
   },
   {

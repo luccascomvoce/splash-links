@@ -202,10 +202,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // ============================================ //
-    // INICIALIZAÇÃO DO CARROSSEL (SWIPER.JS)       //
+    // INICIALIZAÇÃO DO CARROSSEL DE PISCINAS       //
     // ============================================ //
-    if (typeof Swiper !== 'undefined') {
-        const swiper = new Swiper('.swiper', {
+    const poolSwiperEl = document.querySelector('.pool-swiper');
+    if (poolSwiperEl && typeof Swiper !== 'undefined') {
+        const swiper = new Swiper(poolSwiperEl, {
             // Quantidade de slides visíveis
             slidesPerView: 1,
             // Espaçamento entre os slides
@@ -216,14 +217,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Paginação (os "pontos" abaixo do carrossel)
             pagination: {
-                el: '.swiper-pagination',
+                el: poolSwiperEl.querySelector('.swiper-pagination'),
                 clickable: true, // Permite clicar nos pontos para navegar
             },
 
             // Botões de navegação (setas de "próximo" e "anterior")
             navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
+                nextEl: poolSwiperEl.querySelector('.swiper-button-next'),
+                prevEl: poolSwiperEl.querySelector('.swiper-button-prev'),
             },
 
             // Configurações de responsividade
@@ -243,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Permite arrastar com o mouse no desktop
             grabCursor: true,
         });
-    } else {
+    } else if (typeof Swiper === 'undefined') {
         console.warn("Swiper library not loaded. Skipping swiper initialization.");
     }
 
@@ -631,8 +632,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // =========================================================================
+    // 🌟 CONFIGURAÇÃO DE PRODUTOS PROMOVIDOS / ORDEM DE EXIBIÇÃO NO CATÁLOGO
+    // -------------------------------------------------------------------------
+    // Para definir quais produtos aparecem primeiro na aba "Todos" (ou categorias),
+    // basta ordenar os identificadores (IDs ou títulos) na lista abaixo.
+    // O sistema faz a correspondência automática e posiciona os itens no topo.
+    // =========================================================================
+    const PROMOTED_PRODUCTS_CONFIG = [
+        'clorador',       // 1º Clorador
+        'aspirador-splash', // 2º Aspirador
+        'capa-termica',   // 3º Capa Térmica
+        'catador'         // 4º Catador
+    ];
+
     // ============================================ //
-    // SEÇÃO MOSAICO DINÂMICO DE PRODUTOS & ÁGUA    //
+    // SEÇÃO CATÁLOGO DE PRODUTOS (SWIPER 2 LINHAS) //
     // ============================================ //
     const productsSection = document.getElementById('section-outros-produtos');
     const mosaicGrid = document.getElementById('products-mosaic-grid');
@@ -649,419 +664,83 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalZapBtn = document.getElementById('modal-product-zap-btn');
 
     let allProductsData = [];
-
-    // ============================================ //
-    // MOTOR 1: REFRAÇÃO REALÍSTICA DE ÁGUA (LIQUID CANVAS) //
-    // ============================================ //
-    const WaterRippleEngine = (function() {
-        const canvas = document.getElementById('products-water-canvas');
-        if (!canvas || !productsSection) return null;
-
-        const ctx = canvas.getContext('2d');
-        const simW = 160;
-        let simH = 90;
-        let size = simW * simH;
-
-        let buffer1 = new Float32Array(size);
-        let buffer2 = new Float32Array(size);
-
-        const offCanvas = document.createElement('canvas');
-        const offCtx = offCanvas.getContext('2d');
-        let imgData = null;
-
-        // Carrega a textura fundo-piscina.png para aplicar refração física 2D real
-        const bgImg = new Image();
-        bgImg.src = './images/fundo-piscina.png';
-        const bgCanvas = document.createElement('canvas');
-        const bgCtx = bgCanvas.getContext('2d');
-        let bgData = null;
-        let isBgLoaded = false;
-
-        bgImg.onload = function() {
-            isBgLoaded = true;
-            updateBgData();
-        };
-
-        function updateBgData() {
-            if (!isBgLoaded || !simW || !simH) return;
-            bgCanvas.width = simW;
-            bgCanvas.height = simH;
-            bgCtx.drawImage(bgImg, 0, 0, simW, simH);
-            try {
-                bgData = bgCtx.getImageData(0, 0, simW, simH).data;
-            } catch (e) {
-                console.warn('Não foi possível ler bgData para refração de água', e);
-            }
-        }
-
-        let isRunning = false;
-        let animId = null;
-
-        function resize() {
-            const rect = productsSection.getBoundingClientRect();
-            const w = Math.ceil(rect.width);
-            const h = Math.ceil(rect.height);
-            if (w === 0 || h === 0) return;
-
-            canvas.width = w;
-            canvas.height = h;
-
-            simH = Math.max(30, Math.floor(simW * (h / w)));
-            size = simW * simH;
-
-            buffer1 = new Float32Array(size);
-            buffer2 = new Float32Array(size);
-
-            offCanvas.width = simW;
-            offCanvas.height = simH;
-            imgData = offCtx.createImageData(simW, simH);
-
-            updateBgData();
-        }
-
-        function disturb(px, py, radius, strength) {
-            if (!canvas.width || !canvas.height) return;
-            const cx = (px / canvas.width) * simW;
-            const cy = (py / canvas.height) * simH;
-            const r = Math.max(3.5, (radius / canvas.width) * simW);
-            const rSq = r * r;
-
-            const minX = Math.max(1, Math.floor(cx - r));
-            const maxX = Math.min(simW - 1, Math.ceil(cx + r));
-            const minY = Math.max(1, Math.floor(cy - r));
-            const maxY = Math.min(simH - 1, Math.ceil(cy + r));
-
-            for (let y = minY; y < maxY; y++) {
-                for (let x = minX; x < maxX; x++) {
-                    const dx = x - cx;
-                    const dy = y - cy;
-                    const dSq = dx * dx + dy * dy;
-                    if (dSq < rSq) {
-                        const dist = Math.sqrt(dSq);
-                        // Gaussian Bell Falloff para propagação de ondas perfeitamente circulares
-                        const falloff = 0.5 * (1 + Math.cos((dist / r) * Math.PI));
-                        const idx = y * simW + x;
-                        buffer1[idx] += strength * falloff;
-                    }
-                }
-            }
-        }
-
-        function updateSimulation() {
-            // Equação de Ondas 2D com amortecimento de líquido de piscina
-            const w = simW;
-            const h = simH;
-
-            for (let y = 1; y < h - 1; y++) {
-                let row = y * w;
-                for (let x = 1; x < w - 1; x++) {
-                    let idx = row + x;
-                    buffer2[idx] = ((
-                        buffer1[idx - 1] +
-                        buffer1[idx + 1] +
-                        buffer1[idx - w] +
-                        buffer1[idx + w]
-                    ) * 0.5) - buffer2[idx];
-
-                    buffer2[idx] *= 0.96; // Amortecimento suave e cristalino da água
-                }
-            }
-
-            // Troca de buffers
-            const temp = buffer1;
-            buffer1 = buffer2;
-            buffer2 = temp;
-        }
-
-        function render() {
-            if (!imgData) return;
-            const data = imgData.data;
-            const w = simW;
-            const h = simH;
-
-            for (let y = 1; y < h - 1; y++) {
-                let row = y * w;
-                for (let x = 1; x < w - 1; x++) {
-                    let idx = row + x;
-                    let val = buffer1[idx];
-
-                    // Variação de normais para refração real da superfície da água
-                    let dx = buffer1[idx + 1] - buffer1[idx - 1];
-                    let dy = buffer1[idx + w] - buffer1[idx - w];
-
-                    let pixelIdx = idx * 4;
-
-                    if (bgData && isBgLoaded) {
-                        // Refração Física 2D: Distorce a imagem de fundo (fundo-piscina.png) com base na inclinação da onda
-                        let refX = Math.min(w - 1, Math.max(0, Math.floor(x + dx * 0.45)));
-                        let refY = Math.min(h - 1, Math.max(0, Math.floor(y + dy * 0.45)));
-                        let refIdx = (refY * w + refX) * 4;
-
-                        // Brilho cáustico sutil nas cristas da onda
-                        let caustic = (-dx - dy) * 1.6;
-
-                        data[pixelIdx]     = Math.min(255, Math.max(0, bgData[refIdx] + caustic * 8));
-                        data[pixelIdx + 1] = Math.min(255, Math.max(0, bgData[refIdx + 1] + caustic * 18 + Math.abs(val) * 0.08));
-                        data[pixelIdx + 2] = Math.min(255, Math.max(0, bgData[refIdx + 2] + caustic * 26 + Math.abs(val) * 0.15));
-                        
-                        // Opacidade dinâmica cristalina: sutil e translúcido (mostra o fundo e destaca as ondas do dedo)
-                        let waveEnergy = (Math.abs(dx) + Math.abs(dy)) * 22 + Math.abs(val) * 0.35 + Math.max(0, caustic) * 9;
-                        data[pixelIdx + 3] = Math.min(130, Math.max(12, Math.floor(12 + waveEnergy)));
-                    } else {
-                        // Fallback de refração líquida translúcida
-                        let specular = Math.max(0, (-dx - dy) * 0.7);
-                        let intensity = Math.min(255, Math.abs(val) * 0.4 + specular * 10);
-
-                        data[pixelIdx]     = Math.min(255, 0 + intensity * 0.2);
-                        data[pixelIdx + 1] = Math.min(255, 80 + intensity * 0.4 + specular * 0.8);
-                        data[pixelIdx + 2] = Math.min(255, 160 + intensity * 0.4 + specular * 1.0);
-                        data[pixelIdx + 3] = Math.min(45, Math.abs(val) * 0.4 + specular * 8);
-                    }
-                }
-            }
-
-            offCtx.putImageData(imgData, 0, 0);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Desenha com interpolação bicúbica/linear do navegador
-            ctx.drawImage(offCanvas, 0, 0, canvas.width, canvas.height);
-
-            // Micro-gotas em repouso (Garoa d'água ambiente muito discreta)
-            if (Math.random() < 0.01) {
-                disturb(
-                    Math.random() * canvas.width,
-                    Math.random() * canvas.height,
-                    Math.random() * 20 + 10,
-                    Math.random() * 30 + 15
-                );
-            }
-        }
-
-        function tick() {
-            if (!isRunning) return;
-            updateSimulation();
-            render();
-            animId = requestAnimationFrame(tick);
-        }
-
-        function start() {
-            if (isRunning) return;
-            isRunning = true;
-            resize();
-            animId = requestAnimationFrame(tick);
-        }
-
-        function stop() {
-            isRunning = false;
-            if (animId) {
-                cancelAnimationFrame(animId);
-                animId = null;
-            }
-        }
-
-        resize();
-        window.addEventListener('resize', resize);
-
-        return {
-            start,
-            stop,
-            disturb
-        };
-    })();
-
-    // ============================================ //
-    // MOTOR 2: FÍSICA FLUTUANTE DOS CARDS DO MOSAICO //
-    // ============================================ //
-    const MosaicWaterPhysics = (function() {
-        let cardNodes = [];
-        let cardsData = [];
-
-        let mouseX = -9999;
-        let mouseY = -9999;
-        let isMouseOver = false;
-
-        let isRunning = false;
-        let animId = null;
-
-        function updateCardPositions() {
-            if (!mosaicGrid) return;
-            const gridRect = mosaicGrid.getBoundingClientRect();
-            cardNodes = Array.from(mosaicGrid.querySelectorAll('.product-card'));
-
-            cardsData = cardNodes.map((el, i) => {
-                const rect = el.getBoundingClientRect();
-                return {
-                    el: el,
-                    cx: (rect.left + rect.width / 2) - gridRect.left,
-                    cy: (rect.top + rect.height / 2) - gridRect.top,
-                    floatPhase: i * 0.85 + Math.random() * 0.5,
-                    curScale: 1.0,
-                    targetScale: 1.0,
-                    curX: 0,
-                    curY: 0,
-                    targetX: 0,
-                    targetY: 0,
-                    curRot: 0,
-                    targetRot: 0
-                };
-            });
-        }
-
-        function handlePointerMove(e) {
-            if (!productsSection || !mosaicGrid) return;
-            const secRect = productsSection.getBoundingClientRect();
-            const gridRect = mosaicGrid.getBoundingClientRect();
-
-            let clientX, clientY;
-            if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-
-            const secX = clientX - secRect.left;
-            const secY = clientY - secRect.top;
-
-            mouseX = clientX - gridRect.left;
-            mouseY = clientY - gridRect.top;
-            isMouseOver = true;
-
-            // Transmite a perturbação para o motor de refração física da água no canvas
-            if (WaterRippleEngine) {
-                WaterRippleEngine.disturb(secX, secY, 32, 60);
-            }
-        }
-
-        function handlePointerLeave() {
-            isMouseOver = false;
-            mouseX = -9999;
-            mouseY = -9999;
-        }
-
-        function tick(timestamp) {
-            if (!isRunning) return;
-
-            const time = timestamp * 0.002;
-            const swellRadius = 160;    // Raio de ampliação do card sob o mouse
-            const displaceRadius = 300; // Raio de afastamento conectado dos vizinhos
-
-            cardsData.forEach(card => {
-                // 1. Movimento orgânico de flutuação em repouso
-                const idleY = Math.sin(time + card.floatPhase) * 3.5;
-                const idleRot = Math.cos(time * 0.7 + card.floatPhase) * 0.6;
-
-                let targetScale = 1.0;
-                let targetPushX = 0;
-                let targetPushY = 0;
-
-                // 2. Campo de Força Líquido Conectado (Expansão e Encolhimento Intensos)
-                if (isMouseOver) {
-                    const dx = card.cx - mouseX;
-                    const dy = card.cy - mouseY;
-                    const dist = Math.hypot(dx, dy);
-
-                    if (dist < swellRadius) {
-                        // Card sob o cursor -> Crescimento marcante e intenso (1.32x) e elevação flutuante (-10px)
-                        const factor = 1 - (dist / swellRadius);
-                        targetScale = 1.0 + (factor * 0.32); 
-                        targetPushY = -10.0;
-                        card.el.classList.add('is-active');
-                    } else if (dist < displaceRadius) {
-                        // Cards vizinhos -> Afastamento forte (26px) e encolhimento acentuado (0.85x)
-                        const factor = 1 - ((dist - swellRadius) / (displaceRadius - swellRadius));
-                        const pushForce = factor * 26.0; 
-                        const angle = Math.atan2(dy, dx);
-
-                        targetPushX = Math.cos(angle) * pushForce;
-                        targetPushY = Math.sin(angle) * pushForce;
-                        targetScale = 1.0 - (factor * 0.15); 
-                        card.el.classList.remove('is-active');
-                    } else {
-                        // Demais cards do mosaico -> Encolhem para 0.88x para criar foco total no card ativo
-                        targetScale = 0.88;
-                        card.el.classList.remove('is-active');
-                    }
-                } else {
-                    card.el.classList.remove('is-active');
-                }
-
-                // 3. Física de Lerp/Spring fluida e elástica
-                card.curScale += (targetScale - card.curScale) * 0.14;
-                card.curX += (targetPushX - card.curX) * 0.12;
-                card.curY += (targetPushY - card.curY) * 0.12;
-                card.curRot += (idleRot - card.curRot) * 0.09;
-
-                // 4. Aplica a transformação 3D acelerada por GPU
-                const totalY = card.curY + idleY;
-                card.el.style.transform = `translate3d(${card.curX.toFixed(2)}px, ${totalY.toFixed(2)}px, 0px) scale(${card.curScale.toFixed(3)}) rotate(${card.curRot.toFixed(2)}deg)`;
-            });
-
-            animId = requestAnimationFrame(tick);
-        }
-
-        function start() {
-            if (isRunning) return;
-            isRunning = true;
-            updateCardPositions();
-            animId = requestAnimationFrame(tick);
-        }
-
-        function stop() {
-            isRunning = false;
-            if (animId) {
-                cancelAnimationFrame(animId);
-                animId = null;
-            }
-        }
-
-        function init() {
-            updateCardPositions();
-        }
-
-        // Event Listeners de Pointer/Mouse/Touch
-        if (productsSection) {
-            productsSection.addEventListener('mousemove', handlePointerMove, { passive: true });
-            productsSection.addEventListener('mouseleave', handlePointerLeave);
-            productsSection.addEventListener('touchstart', handlePointerMove, { passive: true });
-            productsSection.addEventListener('touchmove', handlePointerMove, { passive: true });
-            productsSection.addEventListener('touchend', handlePointerLeave);
-        }
-
-        window.addEventListener('resize', updateCardPositions);
-
-        return {
-            init,
-            start,
-            stop
-        };
-    })();
-
-    // ============================================ //
-    // OBSERVER DE PERFORMANCE (PAUSA OFF-SCREEN)   //
-    // ============================================ //
-    if (productsSection && 'IntersectionObserver' in window) {
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (WaterRippleEngine) WaterRippleEngine.start();
-                    if (MosaicWaterPhysics) MosaicWaterPhysics.start();
-                } else {
-                    if (WaterRippleEngine) WaterRippleEngine.stop();
-                    if (MosaicWaterPhysics) MosaicWaterPhysics.stop();
-                }
-            });
-        }, { rootMargin: '200px 0px' });
-
-        sectionObserver.observe(productsSection);
-    }
+    let productsSwiperInstance = null;
 
     // Gerador Dinâmico de Link WhatsApp para cada produto específico
     function getProductWhatsappUrl(productTitle) {
         const phone = "5519989064820";
-        const message = `Olá! Vim pelo site e gostaria de solicitar um orçamento para o produto: ${productTitle}`;
+        const message = `Olá! Vi o produto ${productTitle} no site e gostaria de saber mais detalhes.`;
         return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    }
+
+    // Normaliza strings removendo acentos e espaços extras
+    function normalizeText(str) {
+        return (str || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .trim();
+    }
+
+    // Calcula a prioridade do produto com base no array de configuração e no flag is_destaque
+    function getProductPriority(product) {
+        const id = (product.id || '').toLowerCase().trim();
+        const titleNorm = normalizeText(product.title);
+
+        for (let i = 0; i < PROMOTED_PRODUCTS_CONFIG.length; i++) {
+            const target = PROMOTED_PRODUCTS_CONFIG[i].toLowerCase().trim();
+            const targetNorm = normalizeText(target);
+
+            // Casamento por ID exato, título normalizado, prefixo de ID ou termo no título
+            if (id === target || titleNorm === targetNorm || id.startsWith(target + '-') || id.endsWith('-' + target)) {
+                return i;
+            }
+            if (titleNorm.startsWith(targetNorm) || titleNorm.includes(targetNorm)) {
+                return i;
+            }
+            if (target === 'clorador' && (id === 'clorador' || id.includes('clorador'))) return i;
+            if (target === 'aspirador-splash' && (id === 'aspirador-splash' || titleNorm === 'aspirador')) return i;
+            if (target === 'capa-termica' && (id === 'capa-termica' || titleNorm.includes('capa termica'))) return i;
+            if (target === 'catador' && (id === 'catador' || titleNorm.includes('catador'))) return i;
+        }
+
+        // Outros produtos marcados como destaque
+        if (product.is_destaque) {
+            return 100;
+        }
+
+        return 9999;
+    }
+
+    // Renderiza o HTML de um card individual de produto com link direto para o WhatsApp
+    function renderProductCardHtml(product) {
+        const isHighlight = product.is_destaque || (product.categories && product.categories.includes('Destaques'));
+        const defaultImg = 'https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp';
+        const imgSrc = product.image || defaultImg;
+        const nonDestaqueCat = (product.categories || []).find(c => c !== 'Destaques');
+        const primaryCat = nonDestaqueCat || 'Splash';
+        const zapUrl = getProductWhatsappUrl(product.title);
+
+        return `
+            <a href="${zapUrl}" target="_blank" rel="noopener noreferrer" class="product-card" data-id="${product.id}" aria-label="Ver detalhes de ${product.title} no WhatsApp">
+                <div class="product-card-img-wrapper">
+                    <img class="product-card-img" src="${imgSrc}" alt="${product.title}" loading="lazy" decoding="async">
+                    ${isHighlight ? `<span class="product-badge-tag"><i class="fa fa-star"></i> Destaque</span>` : ''}
+                </div>
+                <div class="product-card-body">
+                    <div>
+                        <span class="product-card-cat">${primaryCat}</span>
+                        <h3 class="product-card-title">${product.title}</h3>
+                    </div>
+                    <div class="product-card-footer">
+                        <span class="product-card-cta">Ver detalhes <i class="fa fa-arrow-right"></i></span>
+                        <span class="product-card-zap-btn" title="Conversar no WhatsApp" aria-hidden="true">
+                            <i class="fab fa-whatsapp"></i>
+                        </span>
+                    </div>
+                </div>
+            </a>
+        `;
     }
 
     // Carregar dados de products.json
@@ -1070,19 +749,26 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(res => res.json())
             .then(products => {
                 allProductsData = products;
-                renderMosaic('all');
+                renderProductsGrid('all');
             })
             .catch(err => {
-                console.warn('Erro ao carregar products.json, tentando fallback:', err);
+                console.warn('Erro ao carregar products.json:', err);
+                if (mosaicGrid) {
+                    mosaicGrid.innerHTML = `
+                        <div class="products-empty-state">
+                            <p>Não foi possível carregar os produtos no momento. Por favor, tente novamente mais tarde.</p>
+                        </div>
+                    `;
+                }
             });
     }
 
-    function renderMosaic(filterCategory) {
+    function renderProductsGrid(filterCategory) {
         if (!mosaicGrid) return;
 
         let filtered = allProductsData;
         if (filterCategory === 'Destaques') {
-            filtered = allProductsData.filter(p => p.is_destaque);
+            filtered = allProductsData.filter(p => p.is_destaque || (p.categories && p.categories.includes('Destaques')));
         } else if (filterCategory !== 'all') {
             filtered = allProductsData.filter(p => 
                 p.categories && p.categories.includes(filterCategory)
@@ -1090,60 +776,101 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (filtered.length === 0) {
+            if (productsSwiperInstance) {
+                productsSwiperInstance.destroy(true, true);
+                productsSwiperInstance = null;
+            }
             mosaicGrid.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: rgba(255,255,255,0.7);">
+                <div class="products-empty-state">
                     <p>Nenhum produto encontrado nesta categoria no momento.</p>
                 </div>
             `;
             return;
         }
 
-        mosaicGrid.innerHTML = filtered.map(product => {
-            const sizeClass = product.size ? `size-${product.size}` : 'size-small';
-            const isHighlight = product.is_destaque;
-            const defaultImg = 'https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp';
-            const imgSrc = product.image || defaultImg;
-
-            return `
-                <div class="product-card ${sizeClass}" data-id="${product.id}" tabindex="0" role="button" aria-label="${product.title}">
-                    <div class="product-card-img-wrapper">
-                        <img class="product-card-img" src="${imgSrc}" alt="${product.title}" loading="lazy">
-                    </div>
-                    <div class="product-card-overlay"></div>
-                    ${isHighlight ? `<span class="product-badge-tag highlight"><i class="fa fa-star"></i> Destaque</span>` : ''}
-                    <div class="product-card-content">
-                        <h3 class="product-card-title">${product.title}</h3>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        // Adicionar eventos de clique nos cards para abrir o modal de detalhes
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const prodId = this.getAttribute('data-id');
-                const product = allProductsData.find(p => p.id === prodId);
-                if (product) {
-                    openProductModal(product);
-                }
-            });
-            card.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
+        // Ordenação Prioritária: Produtos em destaque e configurados aparecem primeiro
+        const sortedProducts = [...filtered].sort((a, b) => {
+            const prioA = getProductPriority(a);
+            const prioB = getProductPriority(b);
+            if (prioA !== prioB) {
+                return prioA - prioB;
+            }
+            return 0;
         });
 
-        // Atualizar posições no motor de física
-        if (MosaicWaterPhysics) {
-            setTimeout(() => {
-                MosaicWaterPhysics.init();
-            }, 50);
+        // Agrupamento em colunas verticais de 2 produtos para o Swiper de 2 linhas
+        let itemsList = sortedProducts;
+        if (itemsList.length % 2 !== 0) {
+            itemsList = [...sortedProducts, ...sortedProducts];
+        }
+
+        const columns = [];
+        for (let i = 0; i < itemsList.length; i += 2) {
+            columns.push([itemsList[i], itemsList[i + 1]]);
+        }
+
+        // Se houver poucas colunas (< 4), duplica as colunas para permitir loop contínuo perfeito
+        let loopColumns = columns;
+        while (loopColumns.length < 5) {
+            loopColumns = [...loopColumns, ...columns];
+        }
+
+        mosaicGrid.innerHTML = loopColumns.map(col => `
+            <div class="swiper-slide product-column-slide">
+                ${renderProductCardHtml(col[0])}
+                ${col[1] ? renderProductCardHtml(col[1]) : ''}
+            </div>
+        `).join('');
+
+        // Inicializar ou Atualizar o Swiper de Produtos com Loop Infinito Real
+        if (productsSwiperInstance) {
+            productsSwiperInstance.destroy(true, true);
+            productsSwiperInstance = null;
+        }
+
+        if (typeof Swiper !== 'undefined') {
+            productsSwiperInstance = new Swiper('.products-swiper', {
+                slidesPerView: 'auto',
+                centeredSlides: false,
+                spaceBetween: 18,
+                loop: true,
+                loopAdditionalSlides: 6,
+                loopPreventsSliding: false,
+                touchEventsTarget: 'container',
+                simulateTouch: true,
+                touchRatio: 1,
+                touchAngle: 45,
+                grabCursor: true,
+                allowTouchMove: true,
+                speed: 400,
+                watchSlidesProgress: true,
+                navigation: {
+                    nextEl: '#products-nav-next',
+                    prevEl: '#products-nav-prev',
+                    disabledClass: 'products-nav-disabled-none',
+                },
+                breakpoints: {
+                    320: {
+                        slidesPerView: 'auto',
+                        centeredSlides: true,
+                        spaceBetween: 12,
+                    },
+                    641: {
+                        slidesPerView: 'auto',
+                        centeredSlides: false,
+                        spaceBetween: 16,
+                    },
+                    993: {
+                        slidesPerView: 'auto',
+                        centeredSlides: false,
+                        spaceBetween: 18,
+                    }
+                }
+            });
         }
     }
 
-    // Filtragem por Categorias com transição suave de fade
+    // Filtragem por Categorias com transição suave
     if (categoryFilters) {
         const filterBtns = categoryFilters.querySelectorAll('.category-btn');
         filterBtns.forEach(btn => {
@@ -1155,12 +882,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (mosaicGrid) {
                     mosaicGrid.style.opacity = '0';
+                    mosaicGrid.style.transform = 'translateY(8px)';
                     setTimeout(() => {
-                        renderMosaic(cat);
+                        renderProductsGrid(cat);
                         mosaicGrid.style.opacity = '1';
-                    }, 150);
+                        mosaicGrid.style.transform = 'translateY(0)';
+                    }, 140);
                 } else {
-                    renderMosaic(cat);
+                    renderProductsGrid(cat);
                 }
             });
         });

@@ -342,7 +342,7 @@
     <main>
         <section class="content-section carrossel-section">
             <h2>Conheça nossas piscinas</h2>
-            <div class="swiper">
+            <div class="swiper pool-swiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <a href="#" target="_blank" rel="noopener noreferrer" class="pool-card-link zap-comercial">
@@ -441,7 +441,6 @@
         </section>
 
         <section class="products-section" id="section-outros-produtos">
-            <canvas id="products-water-canvas" class="products-water-canvas"></canvas>
             <div class="products-container">
                 <div class="products-header">
                     <h2 class="section-title">Outros produtos dos quais você precisa</h2>
@@ -462,20 +461,36 @@
                             Cascatas</button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Dynamic Mosaic Container -->
-                <div class="products-mosaic" id="products-mosaic-grid">
-                    <!-- Dynamic product tiles rendered via scripts.js -->
-                    <div class="mosaic-skeleton-loader">
-                        <div class="skeleton-card large"></div>
-                        <div class="skeleton-card large"></div>
-                        <div class="skeleton-card medium"></div>
-                        <div class="skeleton-card small"></div>
-                        <div class="skeleton-card small"></div>
-                        <div class="skeleton-card small"></div>
+            <!-- Products Carousel Container (Swiper 2-Row Infinite Loop) -->
+            <div class="products-carousel-container">
+                <div class="swiper products-swiper">
+                    <div class="swiper-wrapper" id="products-mosaic-grid">
+                        <!-- Dynamic product column slides rendered via scripts.js -->
+                        <div class="swiper-slide product-column-slide">
+                            <div class="skeleton-card"></div>
+                            <div class="skeleton-card"></div>
+                        </div>
+                        <div class="swiper-slide product-column-slide">
+                            <div class="skeleton-card"></div>
+                            <div class="skeleton-card"></div>
+                        </div>
+                        <div class="swiper-slide product-column-slide">
+                            <div class="skeleton-card"></div>
+                            <div class="skeleton-card"></div>
+                        </div>
+                        <div class="swiper-slide product-column-slide">
+                            <div class="skeleton-card"></div>
+                            <div class="skeleton-card"></div>
+                        </div>
                     </div>
+                    <div class="swiper-button-prev products-swiper-prev" id="products-nav-prev" aria-label="Produtos anteriores"></div>
+                    <div class="swiper-button-next products-swiper-next" id="products-nav-next" aria-label="Próximos produtos"></div>
                 </div>
+            </div>
 
+            <div class="products-container">
                 <div class="products-footer">
                     <p>Não encontrou o que procura? Fale diretamente com nossos consultores de vendas!</p>
                     <a href="#" target="_blank" rel="noopener noreferrer"

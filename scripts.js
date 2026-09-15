@@ -734,24 +734,62 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
-    // Carregar dados de products.json
-    if (mosaicGrid) {
-        fetch('products.json')
-            .then(res => res.json())
-            .then(products => {
-                allProductsData = products;
-                renderProductsGrid('all');
-            })
-            .catch(err => {
-                console.warn('Erro ao carregar products.json:', err);
-                if (mosaicGrid) {
-                    mosaicGrid.innerHTML = `
-                        <div class="products-empty-state">
-                            <p>Não foi possível carregar os produtos no momento. Por favor, tente novamente mais tarde.</p>
-                        </div>
-                    `;
-                }
+    // =========================================================================
+    // CARREGAMENTO INTELIGENTE DO CATÁLOGO SOB DEMANDA (500px DO VIEWPORT)
+    // -------------------------------------------------------------------------
+    let hasRequestedProducts = false;
+    let pendingCategoryToRender = 'all';
+
+    function loadProductsCatalog(category = 'all') {
+        pendingCategoryToRender = category;
+
+        if (hasRequestedProducts) {
+            if (allProductsData.length > 0) {
+                renderProductsGrid(category);
+            }
+            return;
+        }
+        hasRequestedProducts = true;
+
+        if (mosaicGrid) {
+            fetch('products.json')
+                .then(res => res.json())
+                .then(products => {
+                    allProductsData = products;
+                    renderProductsGrid(pendingCategoryToRender);
+                })
+                .catch(err => {
+                    console.warn('Erro ao carregar products.json:', err);
+                    if (mosaicGrid) {
+                        mosaicGrid.innerHTML = `
+                            <div class="products-empty-state">
+                                <p>Não foi possível carregar os produtos no momento. Por favor, tente novamente mais tarde.</p>
+                            </div>
+                        `;
+                    }
+                });
+        }
+    }
+
+    // Observador de Interseção: Dispara quando a seção estiver a 500px da tela
+    if (productsSection) {
+        if ('IntersectionObserver' in window) {
+            const productsObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        loadProductsCatalog(pendingCategoryToRender);
+                        observer.unobserve(productsSection);
+                    }
+                });
+            }, {
+                rootMargin: '500px 0px' // Inicia o download e renderização a 500px de entrar na tela
             });
+
+            productsObserver.observe(productsSection);
+        } else {
+            // Fallback imediato para navegadores muito antigos
+            loadProductsCatalog('all');
+        }
     }
 
     function renderProductsGrid(filterCategory) {
@@ -875,6 +913,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 const cat = this.getAttribute('data-category');
+
+                if (allProductsData.length === 0) {
+                    loadProductsCatalog(cat);
+                    return;
+                }
 
                 if (mosaicGrid) {
                     mosaicGrid.style.opacity = '0';

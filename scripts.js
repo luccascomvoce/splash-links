@@ -148,27 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initGlassWipe(heroVideo);
     }
 
-    // ============================================ //
-    // ATRIBUIÇÃO DINÂMICA DO WHATSAPP              //
-    // ============================================ //
-    const whatsappLinks = {
-        financeiro: "https://wa.me/5519989064820?text=Ol%C3%A1%2C%20gostaria%20de%20enviar%20meu%20curr%C3%ADculo.",
-        comercial: "https://wa.me/5519989064820?text=Vim%20pelo%20site%20e%20gostaria%20de%20um%20or%C3%A7amento%21"
-    };
 
-    function setWhatsappLinks() {
-        const comercialLinks = document.querySelectorAll('.zap-comercial');
-        comercialLinks.forEach(link => {
-            link.href = whatsappLinks.comercial;
-        });
-
-        const financeiroLinks = document.querySelectorAll('.zap-financeiro');
-        financeiroLinks.forEach(link => {
-            link.href = whatsappLinks.financeiro;
-        });
-    }
-
-    setWhatsappLinks();
 
     // ============================================ //
     // LÓGICA DO EFEITO DE PARALAXE                 //
@@ -666,11 +646,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let allProductsData = [];
     let productsSwiperInstance = null;
 
-    // Gerador Dinâmico de Link WhatsApp para cada produto específico
+    // Gerador Dinâmico de Link WhatsApp para cada produto específico (100% centralizado)
     function getProductWhatsappUrl(productTitle) {
-        const phone = "5519989064820";
-        const message = `Olá! Vi o produto ${productTitle} no site e gostaria de saber mais detalhes.`;
-        return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        if (window.COMPANY_CONFIG && typeof window.COMPANY_CONFIG.getProductWhatsappUrl === 'function') {
+            return window.COMPANY_CONFIG.getProductWhatsappUrl(productTitle);
+        }
+        return '#';
     }
 
     // Normaliza strings removendo acentos e espaços extras
@@ -934,4 +915,68 @@ document.addEventListener('DOMContentLoaded', function() {
             closeProductModal();
         }
     });
+
+    // ============================================
+    // CONTROLE DO BANNER DE COOKIES (LGPD & CONSENT MODE V2)
+    // ============================================
+    const cookieBanner = document.getElementById('cookie-banner');
+    const cookieAcceptBtn = document.getElementById('cookie-accept-btn');
+    const cookieDeclineBtn = document.getElementById('cookie-decline-btn');
+    const cookieSettingsBtn = document.getElementById('cookie-settings-btn');
+
+    function updateConsentState(isAccepted) {
+        const consentValue = isAccepted ? 'accepted' : 'declined';
+        try {
+            localStorage.setItem('splash_cookie_consent', consentValue);
+        } catch (e) {}
+
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+                'analytics_storage': isAccepted ? 'granted' : 'denied',
+                'ad_storage': isAccepted ? 'granted' : 'denied',
+                'ad_user_data': isAccepted ? 'granted' : 'denied',
+                'ad_personalization': isAccepted ? 'granted' : 'denied'
+            });
+        }
+    }
+
+    if (cookieBanner) {
+        let consent = null;
+        try {
+            consent = localStorage.getItem('splash_cookie_consent');
+        } catch (e) {}
+
+        if (!consent) {
+            // Exibe com fade-in suave após 2.5s (após a transição da splash screen)
+            setTimeout(() => {
+                cookieBanner.classList.add('show');
+                cookieBanner.setAttribute('aria-hidden', 'false');
+            }, 2500);
+        }
+
+        if (cookieAcceptBtn) {
+            cookieAcceptBtn.addEventListener('click', function() {
+                updateConsentState(true);
+                cookieBanner.classList.remove('show');
+                cookieBanner.setAttribute('aria-hidden', 'true');
+            });
+        }
+
+        if (cookieDeclineBtn) {
+            cookieDeclineBtn.addEventListener('click', function() {
+                updateConsentState(false);
+                cookieBanner.classList.remove('show');
+                cookieBanner.setAttribute('aria-hidden', 'true');
+            });
+        }
+    }
+
+    // Abertura das configurações de cookies sob demanda pelo usuário
+    if (cookieSettingsBtn && cookieBanner) {
+        cookieSettingsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            cookieBanner.classList.add('show');
+            cookieBanner.setAttribute('aria-hidden', 'false');
+        });
+    }
 });

@@ -1,0 +1,235 @@
+/* =========================================================================
+   ESTILOS COMPARTILHADOS PARA PÁGINAS LEGAIS (LGPD, TERMOS, COOKIES)
+   Splash Piscinas Hortolândia
+   ========================================================================= */
+
+.legal-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--brand-navy-light) 0%, var(--brand-navy-dark) 50%, var(--brand-navy-light) 100%);
+    color: var(--text-white);
+    padding: 40px 20px 80px;
+}
+
+.legal-container {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.legal-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.legal-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--brand-blue-accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 30px;
+    backdrop-filter: blur(12px);
+    transition: all 0.25s ease;
+}
+
+.legal-back-btn:hover {
+    background: rgba(0, 175, 239, 0.15);
+    border-color: var(--brand-blue-accent);
+    color: #fff;
+    transform: translateX(-3px);
+}
+
+.legal-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 45px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.legal-header {
+    margin-bottom: 35px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 25px;
+}
+
+.legal-badge {
+    display: inline-block;
+    background: rgba(0, 175, 239, 0.15);
+    color: var(--brand-blue-accent);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0, 175, 239, 0.3);
+}
+
+.legal-title {
+    font-size: 2.3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.legal-date {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.legal-content h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 32px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legal-content h2::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--brand-blue-accent);
+    border-radius: 2px;
+}
+
+.legal-content p, 
+.legal-content li {
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 14px;
+}
+
+.legal-content ul {
+    padding-left: 24px;
+    margin-bottom: 18px;
+}
+
+.legal-content li {
+    margin-bottom: 8px;
+}
+
+.legal-content strong {
+    color: #fff;
+}
+
+.legal-content a {
+    color: var(--brand-blue-accent);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.legal-content a:hover {
+    color: #fff;
+}
+
+.legal-company-box {
+    background: rgba(0, 175, 239, 0.08);
+    border-left: 4px solid var(--brand-blue-accent);
+    padding: 18px 22px;
+    border-radius: 0 12px 12px 0;
+    margin: 25px 0;
+    line-height: 1.8;
+}
+
+.legal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.92rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legal-table th, 
+.legal-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.legal-table th {
+    background: rgba(0, 175, 239, 0.12);
+    color: #fff;
+    font-weight: 700;
+}
+
+.legal-table td {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.legal-table code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--brand-blue-accent);
+}
+
+.legal-quick-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center;
+}
+
+.legal-quick-links span {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.legal-quick-links a {
+    color: var(--brand-blue-accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.legal-quick-links a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .legal-page {
+        padding: 24px 16px 60px;
+    }
+
+    .legal-card {
+        padding: 25px 20px;
+        border-radius: 16px;
+    }
+
+    .legal-title {
+        font-size: 1.75rem;
+    }
+
+    .legal-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

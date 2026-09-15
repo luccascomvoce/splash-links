@@ -2,15 +2,32 @@
 <html lang="pt-BR">
 
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1Q7E3CRRZL"></script>
+    <!-- Google Consent Mode v2 (Conformidade com LGPD e Google) -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
 
+        // Recupera o consentimento previamente salvo pelo usuário
+        var savedConsent = null;
+        try {
+            savedConsent = localStorage.getItem('splash_cookie_consent');
+        } catch (e) {}
+
+        var isGranted = savedConsent === 'accepted';
+
+        // Estado inicial de consentimento (Default Denied caso não haja aceite prévio)
+        gtag('consent', 'default', {
+            'analytics_storage': isGranted ? 'granted' : 'denied',
+            'ad_storage': isGranted ? 'granted' : 'denied',
+            'ad_user_data': isGranted ? 'granted' : 'denied',
+            'ad_personalization': isGranted ? 'granted' : 'denied',
+            'wait_for_update': 500
+        });
+
+        gtag('js', new Date());
         gtag('config', 'G-1Q7E3CRRZL');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1Q7E3CRRZL"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Splash Piscinas - Hortolândia</title>
@@ -232,7 +249,7 @@
     </script>
 
     <!-- Schema.org JSON-LD: Local Business -->
-    <script type="application/ld+json">
+    <script id="local-business-schema" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Store",
@@ -533,8 +550,8 @@
                 <div class="visit-us-container">
                     <div class="visit-card">
                         <h3>Venha nos visitar!</h3>
-                        <p>Avenida Antônio Zuza Ferreira, 1704<br>Parque Olívio Franceschini, Hortolândia - SP,
-                            13189-225</p>
+                        <p><span data-company="addressStreet">Avenida Antônio Zuza Ferreira, 1704</span><br><span data-company="addressNeighborhood">Parque Olívio Franceschini</span>, <span data-company="addressCityState">Hortolândia - SP</span>,
+                            <span data-company="addressCep">13189-225</span></p>
                         <div class="map-container">
                             <iframe title="Mapa para a Splash Piscinas em Hortolândia, SP"
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d516.2402371801564!2d-47.233296031857066!3d-22.86447765947006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8bdfe17e1e6cf%3A0xade93eea7fbe636e!2sSplash%20Piscinas!5e0!3m2!1spt-BR!2sbr!4v1783890389464!5m2!1spt-BR!2sbr"
@@ -607,8 +624,17 @@
     <footer>
         <div class="footer-container">
             <div class="footer-company">
-                <p class="company-name">THAYFER PISCINAS LTDA</p>
-                <p class="company-cnpj">CNPJ: 67.854.211/0001-62</p>
+                <p class="company-name" data-company="legalName">THAYFER PISCINAS LTDA</p>
+                <p class="company-cnpj" data-company="cnpjFull">CNPJ: 67.854.211/0001-62</p>
+            </div>
+            <div class="footer-legal">
+                <a href="./legal/termos-de-uso.html">Termos de Uso</a>
+                <span class="footer-legal-dot">•</span>
+                <a href="./legal/politica-de-privacidade.html">Política de Privacidade</a>
+                <span class="footer-legal-dot">•</span>
+                <a href="./legal/aviso-de-cookies.html">Aviso de Cookies</a>
+                <span class="footer-legal-dot">•</span>
+                <button type="button" id="cookie-settings-btn" class="footer-legal-btn" title="Gerenciar opções de cookies e privacidade">Preferências de Cookies</button>
             </div>
             <div class="footer-credits">
                 <p>Feito por <a href="https://github.com/luccascomvoce" target="_blank" rel="noopener noreferrer">
@@ -618,8 +644,27 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" crossorigin="anonymous"></script>
+    <!-- Banner de Consentimento de Cookies (Discreto & Elegante) -->
+    <div id="cookie-banner" class="cookie-banner" aria-hidden="true" role="region" aria-label="Consentimento de Cookies">
+        <div class="cookie-banner-content">
+            <div class="cookie-banner-text">
+                <div class="cookie-banner-header">
+                    <span class="cookie-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                    <strong class="cookie-title">Privacidade e Cookies</strong>
+                </div>
+                <p class="cookie-desc">
+                    Utilizamos cookies para melhorar sua experiência e analisar o tráfego do catálogo. Consulte nossa <a href="./legal/politica-de-privacidade.html">Política de Privacidade</a>.
+                </p>
+            </div>
+            <div class="cookie-banner-actions">
+                <button type="button" id="cookie-accept-btn" class="cookie-btn cookie-btn-accept">Aceitar</button>
+                <button type="button" id="cookie-decline-btn" class="cookie-btn cookie-btn-decline">Recusar</button>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" crossorigin="anonymous"></script>
+    <script src="company-config.js"></script>
     <script src="scripts.js"></script>
 
 </body>

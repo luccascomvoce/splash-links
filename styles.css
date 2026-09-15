@@ -40,22 +40,51 @@ html {
 
 body {
     font-family: 'Outfit', 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, var(--brand-navy-light) 0%, var(--brand-navy-dark) 50%, var(--brand-navy-light) 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    background-color: var(--brand-navy-dark);
     color: var(--text-white);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* Camada de gradiente dinâmico 100% acelerada pela GPU (Compositor Thread) */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 25% 25%, var(--brand-navy-light) 0%, transparent 55%),
+                radial-gradient(circle at 75% 75%, var(--brand-navy-light) 0%, transparent 55%),
+                linear-gradient(135deg, var(--brand-navy-light) 0%, var(--brand-navy-dark) 50%, var(--brand-navy-light) 100%);
+    z-index: -2;
+    pointer-events: none;
+    will-change: transform;
+    animation: gradientShiftGpu 20s ease-in-out infinite alternate;
 }
 
 button, input, select, textarea {
     font-family: inherit;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+@keyframes gradientShiftGpu {
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(-4%, -3%, 0) scale(1.04);
+    }
+    100% {
+        transform: translate3d(3%, 4%, 0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body::before {
+        animation: none;
+        transform: none;
+    }
 }
 
 /* ============================================ */
@@ -1443,18 +1472,38 @@ footer a:hover {
     display: contents;
 }
 
-.products-skeleton-loader .skeleton-card {
+.skeleton-card {
     height: 100%;
     width: 260px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.04) 75%);
-    background-size: 200% 100%;
-    animation: skeletonShimmer 1.5s infinite;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 18px;
+    position: relative;
+    overflow: hidden;
 }
 
-@keyframes skeletonShimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+.skeleton-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%);
+    transform: translateX(-100%);
+    animation: skeletonShimmerGpu 1.5s infinite;
+    will-change: transform;
+}
+
+@keyframes skeletonShimmerGpu {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-card::after {
+        animation: none;
+    }
 }
 
 /* Rodapé da seção de produtos */

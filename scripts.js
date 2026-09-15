@@ -715,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return `
             <a href="${zapUrl}" target="_blank" rel="noopener noreferrer" class="product-card" data-id="${product.id}" aria-label="Ver detalhes de ${product.title} no WhatsApp">
                 <div class="product-card-img-wrapper">
-                    <img class="product-card-img" src="${imgSrc}" alt="${product.title}" loading="lazy" decoding="async">
+                    <img class="product-card-img" src="${imgSrc}" alt="${product.title}" width="300" height="300" loading="lazy" decoding="async">
                     ${isHighlight ? `<span class="product-badge-tag"><i class="fa fa-star"></i> Destaque</span>` : ''}
                 </div>
                 <div class="product-card-body">
@@ -901,6 +901,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (modalImage) {
             modalImage.src = product.image || 'https://cdn.splashpiscinas.com/assets/img/acessorios/thermas-mini-01.webp';
             modalImage.alt = product.title;
+            modalImage.width = 400;
+            modalImage.height = 400;
         }
 
         if (modalTitle) modalTitle.textContent = product.title;

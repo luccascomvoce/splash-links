@@ -648,15 +648,29 @@ button:focus-visible {
 }
 
 .swiper-pagination-bullet {
+    position: relative; /* Base para o hitbox invisível */
     width: 10px !important;
     height: 10px !important;
     background: rgba(255, 255, 255, 0.5) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     opacity: 1 !important;
-    margin: 0 6px !important;
+    margin: 0 8px !important;
     border-radius: 50% !important;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
     cursor: pointer;
+}
+
+/* Hitbox Invisível de Acessibilidade (Touch Target WCAG >= 36x36px) */
+.swiper-pagination-bullet::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 36px;
+    min-height: 36px;
+    width: 100%;
+    height: 100%;
 }
 
 .swiper-pagination-bullet:hover {
@@ -1479,12 +1493,14 @@ footer a:hover {
     align-items: center;
     justify-content: center;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .product-modal.open {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 

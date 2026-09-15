@@ -195,6 +195,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // Ativa o loop para um carrossel infinito
             loop: false,
 
+            // Acessibilidade ARIA automática
+            a11y: {
+                enabled: true,
+                prevSlideMessage: 'Slide anterior',
+                nextSlideMessage: 'Próximo slide',
+                firstSlideMessage: 'Primeiro slide',
+                lastSlideMessage: 'Último slide',
+                paginationBulletMessage: 'Ir para o slide {{index}}',
+            },
+
             // Paginação (os "pontos" abaixo do carrossel)
             pagination: {
                 el: poolSwiperEl.querySelector('.swiper-pagination'),
@@ -825,6 +835,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 allowTouchMove: true,
                 speed: 400,
                 watchSlidesProgress: true,
+                a11y: {
+                    enabled: true,
+                    prevSlideMessage: 'Produtos anteriores',
+                    nextSlideMessage: 'Próximos produtos',
+                },
                 navigation: {
                     nextEl: '#products-nav-next',
                     prevEl: '#products-nav-prev',
@@ -895,6 +910,7 @@ document.addEventListener('DOMContentLoaded', function() {
             modalZapBtn.href = zapUrl;
         }
 
+        productModal.removeAttribute('inert');
         productModal.classList.add('open');
         productModal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
@@ -904,6 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!productModal) return;
         productModal.classList.remove('open');
         productModal.setAttribute('aria-hidden', 'true');
+        productModal.setAttribute('inert', '');
         document.body.style.overflow = '';
     }
 
@@ -949,6 +966,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!consent) {
             // Exibe com fade-in suave após 2.5s (após a transição da splash screen)
             setTimeout(() => {
+                cookieBanner.removeAttribute('inert');
                 cookieBanner.classList.add('show');
                 cookieBanner.setAttribute('aria-hidden', 'false');
             }, 2500);
@@ -959,6 +977,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateConsentState(true);
                 cookieBanner.classList.remove('show');
                 cookieBanner.setAttribute('aria-hidden', 'true');
+                cookieBanner.setAttribute('inert', '');
             });
         }
 
@@ -967,6 +986,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateConsentState(false);
                 cookieBanner.classList.remove('show');
                 cookieBanner.setAttribute('aria-hidden', 'true');
+                cookieBanner.setAttribute('inert', '');
             });
         }
     }
@@ -975,6 +995,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cookieSettingsBtn && cookieBanner) {
         cookieSettingsBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            cookieBanner.removeAttribute('inert');
             cookieBanner.classList.add('show');
             cookieBanner.setAttribute('aria-hidden', 'false');
         });

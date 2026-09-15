@@ -1002,4 +1002,36 @@ document.addEventListener('DOMContentLoaded', function() {
             cookieBanner.setAttribute('aria-hidden', 'false');
         });
     }
+
+    // ============================================
+    // LAZY LOADING RIGOROSO DO GOOGLE MAPS (500px)
+    // ============================================
+    const mapIframe = document.getElementById('google-map-iframe');
+    if (mapIframe) {
+        function loadMap() {
+            const dataSrc = mapIframe.getAttribute('data-src');
+            if (dataSrc && !mapIframe.src) {
+                mapIframe.src = dataSrc;
+                mapIframe.removeAttribute('data-src');
+            }
+        }
+
+        if ('IntersectionObserver' in window) {
+            const mapObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        loadMap();
+                        observer.unobserve(mapIframe);
+                    }
+                });
+            }, {
+                rootMargin: '500px 0px' // Dispara quando a seção estiver a 500px da tela
+            });
+
+            mapObserver.observe(mapIframe);
+        } else {
+            // Fallback imediato para navegadores antigos
+            loadMap();
+        }
+    }
 });

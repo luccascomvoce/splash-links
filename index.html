@@ -356,8 +356,8 @@
                     </div>
                 </div>
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev" aria-label="Slide anterior"></div>
-                <div class="swiper-button-next" aria-label="Próximo slide"></div>
+                <button type="button" class="swiper-button-prev" aria-label="Slide anterior"></button>
+                <button type="button" class="swiper-button-next" aria-label="Próximo slide"></button>
             </div>
         </section>
 
@@ -406,8 +406,8 @@
                             <div class="skeleton-card"></div>
                         </div>
                     </div>
-                    <div class="swiper-button-prev products-swiper-prev" id="products-nav-prev" aria-label="Produtos anteriores"></div>
-                    <div class="swiper-button-next products-swiper-next" id="products-nav-next" aria-label="Próximos produtos"></div>
+                    <button type="button" class="swiper-button-prev products-swiper-prev" id="products-nav-prev" aria-label="Produtos anteriores"></button>
+                    <button type="button" class="swiper-button-next products-swiper-next" id="products-nav-next" aria-label="Próximos produtos"></button>
                 </div>
             </div>
 
@@ -423,7 +423,7 @@
         </section>
 
         <!-- Product Details Modal -->
-        <div class="product-modal" id="product-detail-modal" aria-hidden="true" role="dialog" inert>
+        <div class="product-modal" id="product-detail-modal" aria-hidden="true" role="dialog" aria-labelledby="modal-product-title" aria-modal="true" inert>
             <div class="product-modal-backdrop" id="product-modal-backdrop"></div>
             <div class="product-modal-content">
                 <button class="product-modal-close" id="product-modal-close" aria-label="Fechar">&times;</button>
@@ -543,7 +543,7 @@
             </div>
             <div class="footer-credits">
                 <p>Feito por <a href="https://github.com/luccascomvoce" target="_blank" rel="noopener noreferrer">
-                        <span class="fab fa-github" aria-label="GitHub"></span> luccascomvoce
+                        <span class="fab fa-github" aria-hidden="true"></span> luccascomvoce
                     </a></p>
             </div>
         </div>
